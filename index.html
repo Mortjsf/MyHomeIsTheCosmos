@@ -41,6 +41,7 @@
     *, *::before, *::after {
       box-sizing: inherit;
     }
+    /* Layering: stars, shooting stars, comet are all above background, below main content */
     #starfield-canvas, #shooting-star-canvas, #comet-canvas {
       position: fixed;
       top: 0; left: 0;
@@ -50,9 +51,9 @@
       pointer-events: none;
       display: block;
     }
-    #starfield-canvas { z-index: -3; }
-    #shooting-star-canvas { z-index: -2; }
-    #comet-canvas { z-index: -1; }
+    #starfield-canvas { z-index: 0; }
+    #shooting-star-canvas { z-index: 1; }
+    #comet-canvas { z-index: 2; }
     body {
       min-height: 100vh;
       display: flex;
@@ -67,6 +68,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      z-index: 10;
+      position: relative;
     }
     header {
       position: relative;
@@ -74,7 +77,7 @@
       padding: 2rem 1rem 1rem;
       max-width: 800px;
       margin: 0 auto;
-      z-index: 1;
+      z-index: 10;
       user-select: none;
       background: none !important;
       width: 100%;
@@ -116,7 +119,7 @@
       flex-wrap: wrap;
       gap: 1rem;
       margin-top: 1.5rem;
-      z-index: 1;
+      z-index: 10;
       align-items: center;
     }
     .links a {
@@ -142,7 +145,7 @@
       border-radius: 6px;
       object-fit: contain;
     }
-    /* Snapchat logo: yellow circle, white ghost, authentic look */
+    /* Snapchat logo: yellow circle, white ghost, ghost fills most of circle, authentic look */
     .snapchat-logo-bg {
       width: 24px;
       height: 24px;
@@ -157,11 +160,13 @@
       padding: 0;
       box-shadow: 0 0 0 1px #FFFC00, 0 0 6px #fff20050;
       border: 1.5px solid #efe711;
+      overflow: hidden;
     }
     .snapchat-logo-bg svg {
       display: block;
-      width: 18px;
-      height: 18px;
+      width: 22px;
+      height: 22px;
+      margin: 0;
     }
     .bio-button {
       display: block;
@@ -176,7 +181,7 @@
       text-align: center;
       text-decoration: none;
       transition: background 0.3s;
-      z-index: 1;
+      z-index: 10;
       backdrop-filter: blur(1.5px);
     }
     .bio-button:hover {
@@ -190,7 +195,7 @@
       width: 100%;
       max-width: 800px;
       padding: 2rem 1rem;
-      z-index: 1;
+      z-index: 10;
       justify-items: center;
       align-items: center;
       margin: 0 auto;
@@ -225,7 +230,7 @@
       color: #666;
       padding: 2rem 1rem 1.5rem;
       font-size: 0.9rem;
-      z-index: 1;
+      z-index: 10;
       background: none !important;
       width: 100vw;
     }
@@ -282,10 +287,10 @@
         </a>
         <a href="https://www.snapchat.com/add/rickybjornholm" target="_blank" rel="noopener noreferrer">
           <span class="snapchat-logo-bg" title="Snapchat">
-            <!-- Authentic Snapchat ghost in yellow circle -->
-            <svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true" focusable="false">
+            <!-- Ghostface Chillah, white ghost, fills yellow circle, authentic -->
+            <svg viewBox="0 0 48 48" width="22" height="22" aria-hidden="true" focusable="false">
               <circle cx="24" cy="24" r="24" fill="#FFFC00"/>
-              <path d="M24 14c-4.9 0-7.3 2.2-7.3 7.5 0 4 1.8 6.8 2.5 8.1.5.9-.1 2.1-.8 2.7-.9.7-2.9.8-3.8 2.1-.7 1 .1 1.6.8 1.8.9.3 2.7-.2 3.5.3.6.4.4 1.5-.1 2.4-.6.7-2.4 2.2-2.4 2.9 0 .7 1.1 1.4 5.6 1.4s5.6-.7 5.6-1.4c0-.7-1.8-2.2-2.4-2.9-.5-.9-.7-2-.1-2.4.8-.5 2.5 0 3.5-.3.7-.2 1.5-.8.8-1.8-.9-1.3-3-1.4-3.8-2.1-.7-.6-1.3-1.8-.8-2.7.7-1.3 2.5-4.1 2.5-8.1C31.3 16.2 28.9 14 24 14z" fill="#fff" stroke="#000" stroke-width="1.1"/>
+              <path d="M24 10c-5.8 0-8.4 2.6-8.4 8.7 0 4.7 2.1 8.3 2.9 9.7.6 1-.1 2.6-1 3.4-1 .8-3.4.9-4.5 2.4-.8 1.1.1 1.9 1 2.1 1 .4 3.3-.2 4.2.4.7.4.5 1.8-.1 2.8-.7.9-2.9 2.7-2.9 3.4 0 .8 1.3 1.7 7.3 1.7s7.3-.9 7.3-1.7c0-.7-2.2-2.5-2.9-3.4-.6-1-.8-2.4-.1-2.8.9-.5 3.2 0 4.2-.4.9-.2 1.8-1 .9-2.1-1.1-1.5-3.4-1.6-4.5-2.4-.9-.8-1.6-2.4-1-3.4.8-1.4 2.9-5 2.9-9.7C32.4 12.6 29.8 10 24 10z" fill="#fff" stroke="#000" stroke-width="1.2"/>
             </svg>
           </span>
           Snapchat
@@ -322,7 +327,7 @@
         this.x = random(0, width);
         this.y = random(0, height);
         this.radius = random(0.45, 1.5);
-        this.opacity = random(0.55, 0.97);
+        this.opacity = random(0.55, 0.98);
         this.twinkleSpeed = random(0.002, 0.016);
         this.twinklePhase = random(0, Math.PI * 2);
         this.spikes = Math.floor(random(4, 8));
