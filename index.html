@@ -3,73 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MyHomeIsTheCosmos — Electronic Music Producer</title>
-  <meta name="description" content="Myhomeisthecosmos is an electronic music producer blending euphoric Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore vibes." />
-  <meta property="og:title" content="MyHomeIsTheCosmos — Electronic Music Producer" />
-  <meta property="og:description" content="Experience lush atmospheres and pulsing rhythms designed to elevate your soul and move your feet." />
-  <meta property="og:image" content="https://i.ibb.co/mCQ3GSf3/Img.jpg" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://yourdomain.com" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <title>MyHomeIsTheCosmos</title>
+  <meta name="description" content="Myhomeisthecosmos is an electronic music producer blending the euphoric vibes of Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore.">
 
   <style>
-    /* === CSS Variables for Themes & Accessibility === */
-    :root {
-      --color-primary: #00ffe1;
-      --color-primary-light: #00ffe1cc;
-      --color-primary-dark: #009e93;
-      --color-text-light: #eee;
-      --color-text-mid: #ccc;
-      --color-text-muted: #aaa;
-      --color-bg: #000;
-      --focus-outline: 3px solid #00ffe1;
-      --transition-speed: 0.3s;
-      --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    [data-theme="dark"] {
-      --color-primary: #c280ff;
-      --color-primary-light: #c280ffcc;
-      --color-primary-dark: #7a44a7;
-      --color-text-light: #f3e8ff;
-      --color-text-mid: #d1b3ff;
-      --color-text-muted: #b38cff;
-      --color-bg: #0a001a;
-      --focus-outline: 3px solid #c280ff;
-    }
-
     /* ===== Reset & Basics ===== */
     html, body {
       margin: 0;
       padding: 0;
       min-height: 100%;
-      overflow-x: hidden;
-      background: var(--color-bg);
-      font-family: var(--font-family);
-      color: var(--color-text-light);
+      overflow: auto;
+      background: black;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #eee;
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
-      scroll-behavior: smooth;
-    }
-
-    /* ===== Skip to Content Link ===== */
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 1rem;
-      background: var(--color-primary);
-      color: #000;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      z-index: 1000;
-      font-weight: 700;
-      text-decoration: none;
-      transition: top 0.3s ease;
-    }
-    .skip-link:focus {
-      top: 1rem;
-      outline: var(--focus-outline);
     }
 
     /* ===== Starfield Background ===== */
@@ -80,18 +30,6 @@
       z-index: 0;
       background: radial-gradient(ellipse at center, #0a0a12 0%, #000000 80%);
       pointer-events: none;
-      will-change: transform;
-    }
-    /* Fallback static background for no canvas */
-    @supports not (canvas: true) {
-      body {
-        background-image: url('https://i.ibb.co/mCQ3GSf3/Img.jpg');
-        background-size: cover;
-        background-position: center;
-      }
-      #starfield {
-        display: none;
-      }
     }
 
     /* ===== Header ===== */
@@ -102,49 +40,32 @@
       max-width: 800px;
       z-index: 1;
       user-select: none;
-      animation: fadeInUp 1s ease forwards;
-      opacity: 0;
     }
     h1 {
       margin: 0;
       font-size: 3rem;
-      color: var(--color-primary);
+      color: #00ffe1;
       font-weight: 700;
-      text-shadow: 0 0 5px var(--color-primary), 0 0 15px var(--color-primary);
-      transition: color var(--transition-speed);
-    }
-    h1:hover, h1:focus {
-      color: var(--color-primary-light);
-      outline: none;
-      text-shadow: 0 0 8px var(--color-primary-light), 0 0 25px var(--color-primary-light);
-      cursor: default;
+      text-shadow: 0 0 5px #00ffe1, 0 0 15px #00ffe1;
     }
     .header-image {
       width: 500px; height: 500px;
       object-fit: cover;
       margin: 1rem auto 2rem;
       border-radius: 12px;
-      box-shadow: 0 0 30px var(--color-primary-light);
+      box-shadow: 0 0 20px #00ffe1aa;
       display: block;
-      transition: box-shadow 0.3s;
-    }
-    .header-image:hover, .header-image:focus {
-      box-shadow: 0 0 50px var(--color-primary);
-      outline: none;
-      cursor: pointer;
     }
     p, .extended-description {
       max-width: 600px;
       margin: 0.5rem auto;
-      color: var(--color-text-mid);
-      font-size: 1.25rem;
-      line-height: 1.6;
-      padding: 0 1rem;
-      transition: color var(--transition-speed);
+      color: #ccc;
+      font-size: 1.2rem;
+      line-height: 1.4;
     }
     .extended-description {
-      color: var(--color-text-muted);
-      font-size: 1.1rem;
+      color: #aaa;
+      font-size: 1rem;
       margin-top: 1rem;
     }
 
@@ -156,453 +77,278 @@
       gap: 1rem;
       margin-top: 1.5rem;
       z-index: 1;
-      animation: fadeInUp 1.2s ease forwards;
-      opacity: 0;
     }
     .links a {
       display: flex;
       align-items: center;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.6);
       padding: 0.5rem 1rem;
       border-radius: 8px;
-      color: var(--color-primary);
+      color: #00ffe1;
       text-decoration: none;
       font-weight: 600;
-      transition: background 0.3s, color 0.3s;
-      outline-offset: 2px;
+      transition: background 0.3s;
     }
-    .links a:hover,
-    .links a:focus {
-      background: var(--color-primary-light);
-      color: #000;
-      outline: none;
-      box-shadow: 0 0 10px var(--color-primary-light);
-    }
-    .links a:focus-visible {
-      outline: var(--focus-outline);
-      outline-offset: 2px;
+    .links a:hover {
+      background: rgba(0,255,225,0.3);
     }
     .links img {
       width: 24px; height: 24px;
       margin-right: 0.5rem;
-      filter: drop-shadow(0 0 1px rgba(0,0,0,0.5));
     }
     .bio-button {
       display: block;
       margin: 2rem auto 0;
       padding: 0.75rem 1.5rem;
       max-width: 300px;
-      border: 2px solid var(--color-primary);
+      border: 2px solid #00ffe1;
       border-radius: 12px;
-      color: var(--color-primary);
-      background: rgba(0,0,0,0.7);
+      color: #00ffe1;
+      background: rgba(0,0,0,0.6);
       font-weight: 600;
       text-align: center;
       text-decoration: none;
-      transition: background 0.3s, color 0.3s;
+      transition: background 0.3s;
       z-index: 1;
-      outline-offset: 3px;
     }
-    .bio-button:hover,
-    .bio-button:focus {
-      background: var(--color-primary-light);
-      color: #000;
-      outline: none;
-      box-shadow: 0 0 12px var(--color-primary-light);
-    }
-    .bio-button:focus-visible {
-      outline: var(--focus-outline);
-      outline-offset: 3px;
+    .bio-button:hover {
+      background: rgba(0,255,225,0.3);
     }
 
     /* ===== Music Section ===== */
     .music-section {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1rem;
-      max-width: 900px;
-      width: 90vw;
-      margin: 3rem auto 4rem;
-      z-index: 1;
-      animation: fadeInUp 1.4s ease forwards;
-      opacity: 0;
-    }
-    .music-embed {
-      border: none;
-      border-radius: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
+      gap: 2rem;
       width: 100%;
-      height: 166px;
-      box-shadow: 0 0 20px var(--color-primary-light);
-      transition: box-shadow 0.3s;
+      max-width: 1200px;
+      padding: 2rem 1rem;
+      z-index: 1;
     }
-    .music-embed:hover,
-    .music-embed:focus {
-      box-shadow: 0 0 30px var(--color-primary);
-      outline: none;
-      cursor: pointer;
-    }
-
-    /* ===== Expandable About Section ===== */
-    .about-section {
-      max-width: 700px;
-      background: rgba(0,0,0,0.6);
+    iframe {
       border-radius: 12px;
-      margin: 2rem auto 4rem;
-      padding: 1rem 1.5rem;
-      color: var(--color-text-mid);
-      font-size: 1rem;
-      line-height: 1.5;
-      user-select: text;
-      box-shadow: 0 0 20px var(--color-primary-light);
-      cursor: default;
-    }
-    details {
-      color: var(--color-text-mid);
-      font-size: 1rem;
-    }
-    details summary {
-      font-weight: 600;
-      cursor: pointer;
-      outline-offset: 3px;
-      padding: 0.5rem 0;
-      user-select: none;
-    }
-    details summary:focus-visible {
-      outline: var(--focus-outline);
-    }
-    details[open] summary::after {
-      content: " ▲";
-    }
-    details summary::after {
-      content: " ▼";
-      float: right;
-      font-weight: 400;
-      color: var(--color-text-muted);
-    }
-
-    /* ===== Dark Mode Toggle Button ===== */
-    #darkModeToggle {
-      position: fixed;
-      bottom: 1rem;
-      right: 1rem;
-      background: var(--color-primary);
+      width: 100%; height: 352px;
       border: none;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      cursor: pointer;
-      box-shadow: 0 0 15px var(--color-primary);
-      transition: background 0.3s, box-shadow 0.3s;
-      z-index: 1001;
-    }
-    #darkModeToggle:hover,
-    #darkModeToggle:focus {
-      background: var(--color-primary-light);
-      outline: none;
-      box-shadow: 0 0 25px var(--color-primary-light);
-    }
-    #darkModeToggle:focus-visible {
-      outline: var(--focus-outline);
-    }
-    #darkModeToggle svg {
-      fill: #000;
-      width: 24px;
-      height: 24px;
-      pointer-events: none;
     }
 
-    /* ===== Animations ===== */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    /* ===== Footer ===== */
+    footer {
+      text-align: center;
+      color: #666;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      z-index: 1;
     }
 
     /* ===== Responsive ===== */
     @media (max-width: 600px) {
-      h1 {
-        font-size: 2.2rem;
-      }
-      p, .extended-description {
-        font-size: 1.15rem;
-        padding: 0 1rem;
-        line-height: 1.5;
-      }
-      .music-section {
-        grid-template-columns: 1fr;
-        width: 95vw;
-      }
-      /* Reduce star count on small screen */
-    }
-
-    /* ===== Focus styles for keyboard users ===== */
-    a:focus-visible,
-    button:focus-visible,
-    summary:focus-visible {
-      outline: var(--focus-outline);
-      outline-offset: 2px;
+      h1 { font-size: 2.2rem; }
+      .header-image { width: 90vw; height: auto; }
+      p, .links a, .bio-button { font-size: 0.9rem; }
+      .bio-button { padding: 0.6rem 1rem; }
     }
   </style>
 </head>
+
 <body>
+  <canvas id="starfield"></canvas>
 
-  <a href="#maincontent" class="skip-link">Skip to main content</a>
-
-  <canvas id="starfield" aria-hidden="true"></canvas>
-
-  <header role="banner">
-    <h1 tabindex="0">MyHomeIsTheCosmos</h1>
-    <img
-      src="https://i.ibb.co/mCQ3GSf3/Img.jpg"
-      alt="Abstract purple and blue cosmic swirl artwork"
-      class="header-image"
-      tabindex="0"
-      loading="lazy"
-    />
-    <p>
-      I produce euphoric Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore vibes.
-    </p>
-    <p class="extended-description" tabindex="0">
-      My music mixes lush atmospheres with pulsating rhythms to elevate your soul and energize your day. Follow me for fresh drops and cosmic journeys.
-    </p>
+  <header>
+    <h1>MyHomeIsTheCosmos</h1>
+    <img src="https://i.ibb.co/mCQ3GSf3/Img.jpg" alt="MyHomeIsTheCosmos Album Art" class="header-image" loading="lazy" />
+    <p class="extended-description">Myhomeisthecosmos is an electronic music producer blending the euphoric vibes of Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore. Expect lush atmospheres, pulsing rhythms, and melodies designed to elevate your soul and move your feet. Tune in and drift beyond the cosmos.</p>
+    <div class="links">
+      <a href="https://open.spotify.com/artist/56413Wa0FcjVT5EIlu5kdZ" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/174/174872.png" alt="Spotify">Spotify</a>
+      <a href="https://www.instagram.com/myhomeisthecosmos/" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384015.png" alt="Instagram">Instagram</a>
+      <a href="https://www.facebook.com/profile.php?id=61569035439737" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">Facebook</a>
+      <a href="https://www.snapchat.com/add/rickybjornholm" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Snapchat">Snapchat</a>
+    </div>
+    <a class="bio-button" href="https://www.instagram.com/stories/highlights/18006632745407525/" target="_blank" rel="noopener noreferrer">View Artist Bio Highlight</a>
   </header>
 
-  <main id="maincontent" tabindex="-1">
-    <section class="links" aria-label="Social and streaming platforms">
-      <a href="https://open.spotify.com/artist/56413Wa0FcjVT5EIlu5kdZ?si=4e2E88aUQxCBKcsTgFOPdg" target="_blank" rel="noopener noreferrer" aria-label="Spotify artist profile">
-        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png" alt="Spotify logo" />
-        Spotify
-      </a>
-      <a href="https://soundcloud.com/myhomeisthecosmos" target="_blank" rel="noopener noreferrer" aria-label="SoundCloud artist profile">
-        <img src="https://cdn-icons-png.flaticon.com/512/145/145809.png" alt="SoundCloud logo" />
-        SoundCloud
-      </a>
-      <a href="https://instagram.com/myhomeisthecosmos" target="_blank" rel="noopener noreferrer" aria-label="Instagram profile">
-        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram logo" />
-        Instagram
-      </a>
-    </section>
+  <section class="music-section">
+    <iframe src="https://open.spotify.com/embed/album/79kh02V36GrCq56eMMXnQT" loading="lazy"></iframe>
+    <iframe src="https://open.spotify.com/embed/album/0qqwn3YssdwxPdQLKhFZWH" loading="lazy"></iframe>
+    <iframe src="https://open.spotify.com/embed/album/45tT6nHjLpwxSfleqol1WC" loading="lazy"></iframe>
+    <iframe src="https://open.spotify.com/embed/album/4dU3hlbmWBYPuAx6FDLogI" loading="lazy"></iframe>
+  </section>
 
-    <a href="#bio" class="bio-button" id="bioBtn" aria-expanded="false" aria-controls="bio">
-      About the Artist
-    </a>
+  <footer>© 2024 MyHomeIsTheCosmos · All Rights Reserved · Built with 💫 in the cosmos</footer>
 
-    <section id="bio" class="about-section" hidden>
-      <p>
-        I’m a dedicated bedroom producer blending classic and modern electronic styles, always exploring new sounds and techniques. My passion is creating music that moves both mind and body.
-      </p>
-      <p>
-        I use a Boss RC-505 looper, Akai MPC One, Launchpad Pro, and a variety of software tools to craft my productions. I’m constantly evolving my craft and engaging with the electronic music community worldwide.
-      </p>
-    </section>
+<script>
+  (() => {
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let width, height, stars = [], shootingStars = [];
+    const STAR_COUNT = 1200, SHOOTING_STAR_CHANCE = 0.002;
+    let mouseX = 0, mouseY = 0, centerX, centerY;
 
-    <section class="music-section" aria-label="Embedded music players">
-      <iframe
-        class="music-embed"
-        src="https://open.spotify.com/embed/artist/56413Wa0FcjVT5EIlu5kdZ?utm_source=generator"
-        title="Spotify Player for MyHomeIsTheCosmos"
-        allow="encrypted-media"
-        loading="lazy"
-        tabindex="0"
-      ></iframe>
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
 
-      <iframe
-        class="music-embed"
-        src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/myhomeisthecosmos&color=%2300ffe1&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false"
-        title="SoundCloud Player for MyHomeIsTheCosmos"
-        allow="autoplay"
-        loading="lazy"
-        tabindex="0"
-      ></iframe>
-    </section>
-  </main>
-
-  <button id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M12 3a9 9 0 0 0 0 18 9 9 0 0 0 0-18zm0 16a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" />
-    </svg>
-  </button>
-
-  <script>
-    // === Starfield with parallax and twinkle ===
-    (function() {
-      const canvas = document.getElementById('starfield');
-      if (!canvas.getContext) return;
-      const ctx = canvas.getContext('2d');
-      let stars = [];
-      let width, height;
-      const maxStars = window.innerWidth < 600 ? 100 : 250;
-      const shootingStarFrequency = window.innerWidth < 600 ? 0.002 : 0.005;
-
-      function randomRange(min, max) {
-        return Math.random() * (max - min) + min;
+    class Star {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = random(0, width);
+        this.y = random(0, height);
+        this.radius = random(0.3, 1.2);
+        this.opacity = random(0.3, 1);
+        this.speed = this.radius * 0.15 + 0.03;
+        this.twinkleSpeed = random(0.005, 0.02);
+        this.twinklePhase = random(0, Math.PI * 2);
       }
-
-      function Star() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.radius = randomRange(0.5, 1.2);
-        this.alpha = randomRange(0.1, 1);
-        this.alphaChange = randomRange(0.002, 0.01);
-        this.twinkleDir = Math.random() > 0.5 ? 1 : -1;
+      update() {
+        this.y += this.speed;
+        if (this.y > height) this.y = 0;
+        this.twinklePhase += this.twinkleSpeed;
+        this.opacity = 0.5 + 0.5 * Math.sin(this.twinklePhase);
       }
-      Star.prototype.draw = function() {
-        this.alpha += this.alphaChange * this.twinkleDir;
-        if (this.alpha <= 0.1) {
-          this.alpha = 0.1;
-          this.twinkleDir = 1;
-        } else if (this.alpha >= 1) {
-          this.alpha = 1;
-          this.twinkleDir = -1;
-        }
+      draw() {
+        const hue = 200 + 50 * Math.sin(this.twinklePhase * 0.5);
+        const color = hsla(${hue},80%,90%,${this.opacity});
+        const glow = this.radius * 4;
+        const g = ctx.createRadialGradient(this.x, this.y, this.radius, this.x, this.y, glow);
+        g.addColorStop(0, color);
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = g;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-        ctx.shadowColor = `rgba(255, 255, 255, ${this.alpha})`;
-        ctx.shadowBlur = 4;
+        ctx.arc(this.x, this.y, glow, 0, 2 * Math.PI);
         ctx.fill();
-      }
-
-      function ShootingStar() {
-        this.reset();
-      }
-      ShootingStar.prototype.reset = function() {
-        this.x = Math.random() * width;
-        this.y = 0;
-        this.len = randomRange(80, 150);
-        this.speed = randomRange(8, 15);
-        this.size = randomRange(1, 2);
-        this.waitTime = 0;
-        this.active = true;
-      }
-      ShootingStar.prototype.update = function() {
-        if (!this.active) {
-          this.waitTime--;
-          if (this.waitTime <= 0) this.reset();
-          return;
-        }
-        this.x += this.speed;
-        this.y += this.speed / 2;
-        if (this.x > width || this.y > height) {
-          this.active = false;
-          this.waitTime = 100 + Math.random() * 200;
-        }
-      }
-      ShootingStar.prototype.draw = function() {
-        if (!this.active) return;
+        ctx.fillStyle = color;
         ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(this.x - this.len, this.y - this.len / 2);
-        ctx.strokeStyle = 'rgba(255,255,255,0.8)';
-        ctx.lineWidth = this.size;
-        ctx.shadowColor = '#fff';
-        ctx.shadowBlur = 10;
-        ctx.stroke();
-      }
-
-      let shootingStars = [];
-
-      function setup() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-        stars = [];
-        shootingStars = [];
-        for(let i=0; i<maxStars; i++){
-          stars.push(new Star());
-        }
-        for(let i=0; i<3; i++){
-          shootingStars.push(new ShootingStar());
-        }
-      }
-
-      let mouseX = width/2, mouseY = height/2;
-
-      window.addEventListener('resize', setup);
-      window.addEventListener('mousemove', e => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-      });
-
-      function animate() {
-        ctx.clearRect(0,0,width,height);
-
-        // subtle parallax offset
-        let offsetX = (mouseX - width/2) * 0.005;
-        let offsetY = (mouseY - height/2) * 0.005;
-
-        ctx.save();
-        ctx.translate(offsetX, offsetY);
-        stars.forEach(star => star.draw());
-        shootingStars.forEach(shooter => {
-          if(Math.random() < shootingStarFrequency) shooter.active = true;
-          shooter.update();
-          shooter.draw();
-        });
-        ctx.restore();
-
-        requestAnimationFrame(animate);
-      }
-
-      setup();
-      animate();
-    })();
-
-    // === About Section Toggle ===
-    const bioBtn = document.getElementById('bioBtn');
-    const bioSection = document.getElementById('bio');
-
-    bioBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const isHidden = bioSection.hasAttribute('hidden');
-      if (isHidden) {
-        bioSection.removeAttribute('hidden');
-        bioBtn.setAttribute('aria-expanded', 'true');
-        bioSection.focus();
-      } else {
-        bioSection.setAttribute('hidden', '');
-        bioBtn.setAttribute('aria-expanded', 'false');
-        bioBtn.focus();
-      }
-    });
-
-    // === Dark Mode Toggle ===
-    const darkToggle = document.getElementById('darkModeToggle');
-    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-
-    function setTheme(theme) {
-      if (theme === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-      } else {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'light');
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fill();
       }
     }
 
-    darkToggle.addEventListener('click', () => {
-      if (document.documentElement.hasAttribute('data-theme')) {
-        setTheme('light');
-      } else {
-        setTheme('dark');
+    class ShootingStar {
+      constructor() { this.reset(); }
+      reset() {
+        if (Math.random() < 0.5) {
+          this.x = random(0, width);
+          this.y = 0;
+          this.vx = random(-15, 15);
+          this.vy = random(15, 25);
+        } else {
+          this.x = 0;
+          this.y = random(0, height);
+          this.vx = random(15, 25);
+          this.vy = random(-15, 15);
+        }
+        this.length = random(150, 300);
+        this.size = random(1.5, 3);
+        this.life = 0;
+        this.maxLife = random(30, 60);
+        this.trail = [];
       }
+      update() {
+        this.life++;
+        this.trail.push({ x: this.x, y: this.y });
+        if (this.trail.length > this.length) this.trail.shift();
+        this.x += this.vx;
+        this.y += this.vy;
+        if (
+          this.x > width + this.length ||
+          this.y > height + this.length ||
+          this.x < -this.length ||
+          this.y < -this.length ||
+          this.life > this.maxLife
+        ) this.reset();
+      }
+      draw() {
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        for (let i = this.trail.length - 1; i > 0; i--) {
+          const p = this.trail[i], prev = this.trail[i - 1];
+          const a = i / this.trail.length;
+          ctx.strokeStyle = rgba(255,255,255,${a * 0.8});
+          ctx.lineWidth = this.size;
+          ctx.moveTo(prev.x, prev.y);
+          ctx.lineTo(p.x, p.y);
+        }
+        ctx.stroke();
+
+        // draw star-shaped head
+        const head = this.trail[this.trail.length - 1];
+        if (head) {
+          const spikes = 5;
+          const outer = this.size * 5;
+          const inner = outer * 0.5;
+          let rot = Math.PI / 2 * 3;
+          let x = head.x; let y = head.y;
+          ctx.beginPath();
+          ctx.moveTo(x, y - outer);
+          for (let i = 0; i < spikes; i++) {
+            let sx = x + Math.cos(rot) * outer;
+            let sy = y + Math.sin(rot) * outer;
+            ctx.lineTo(sx, sy);
+            rot += Math.PI / spikes;
+            sx = x + Math.cos(rot) * inner;
+            sy = y + Math.sin(rot) * inner;
+            ctx.lineTo(sx, sy);
+            rot += Math.PI / spikes;
+          }
+          ctx.closePath();
+          const grad = ctx.createRadialGradient(x, y, 0, x, y, outer);
+          grad.addColorStop(0, 'rgba(255,255,255,1)');
+          grad.addColorStop(1, 'rgba(255,255,255,0)');
+          ctx.fillStyle = grad;
+          ctx.fill();
+        }
+      }
+    }
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * devicePixelRatio;
+      canvas.height = height * devicePixelRatio;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+    }
+
+    function init() {
+      resize();
+      stars = [];
+      shootingStars = [];
+      for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      centerX = width / 2;
+      centerY = height / 2;
+      stars.forEach(star => {
+        star.update();
+        const ox = (mouseX - centerX) * (star.radius * 0.002);
+        const oy = (mouseY - centerY) * (star.radius * 0.002);
+        ctx.save();
+        ctx.translate(ox, oy);
+        star.draw();
+        ctx.restore();
+      });
+      if (Math.random() < SHOOTING_STAR_CHANCE) shootingStars.push(new ShootingStar());
+      for (let i = shootingStars.length - 1; i >= 0; i--) {
+        shootingStars[i].update();
+        shootingStars[i].draw();
+        if (shootingStars[i].life > shootingStars[i].maxLife) shootingStars.splice(i, 1);
+      }
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', () => {
+      resize();
+      init();
+    });
+    window.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
     });
 
-    // Initialize theme based on saved preference or system preference
-    (function() {
-      const saved = localStorage.getItem('theme');
-      if (saved) {
-        setTheme(saved);
-      } else if (prefersDarkScheme.matches) {
-        setTheme('dark');
-      }
-    })();
-  </script>
-</body>
-</html>
+    init();
+    animate();
+  })();
+</script>
