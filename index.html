@@ -28,10 +28,9 @@
       min-height: 100%;
       width: 100%;
       box-sizing: border-box;
-      background: linear-gradient(to bottom, #090c10 0%, #16203c 80%, #223c5b 100%);
+      background: linear-gradient(to bottom, #080b12 0%, #161e2e 100%);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #eee;
-      /* Ensure vertical scroll, no scrollbars visible */
       overflow-x: hidden;
       scrollbar-width: none;
       -ms-overflow-style: none;
@@ -55,7 +54,6 @@
     #shooting-star-canvas { z-index: -2; }
     #comet-canvas { z-index: -1; }
     body {
-      /* Center content vertically and horizontally, robust for all sizes */
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -143,6 +141,27 @@
       background: none !important;
       border-radius: 6px;
       object-fit: contain;
+    }
+    /* Snapchat logo: yellow circle, white ghost, authentic look */
+    .snapchat-logo-bg {
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      min-height: 24px;
+      margin-right: 0.5rem;
+      border-radius: 50%;
+      background: #FFFC00;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      box-shadow: 0 0 0 1px #FFFC00, 0 0 6px #fff20050;
+      border: 1.5px solid #efe711;
+    }
+    .snapchat-logo-bg svg {
+      display: block;
+      width: 18px;
+      height: 18px;
     }
     .bio-button {
       display: block;
@@ -262,8 +281,13 @@
           <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">Facebook
         </a>
         <a href="https://www.snapchat.com/add/rickybjornholm" target="_blank" rel="noopener noreferrer">
-          <!-- The most authentic Ghostface Chillah Snapchat logo (yellow ghost in a circle) from Flaticon -->
-          <img class="snapchat-logo" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/snapchat.svg" style="background:#FFFC00;padding:2px;" alt="Snapchat">
+          <span class="snapchat-logo-bg" title="Snapchat">
+            <!-- Authentic Snapchat ghost in yellow circle -->
+            <svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true" focusable="false">
+              <circle cx="24" cy="24" r="24" fill="#FFFC00"/>
+              <path d="M24 14c-4.9 0-7.3 2.2-7.3 7.5 0 4 1.8 6.8 2.5 8.1.5.9-.1 2.1-.8 2.7-.9.7-2.9.8-3.8 2.1-.7 1 .1 1.6.8 1.8.9.3 2.7-.2 3.5.3.6.4.4 1.5-.1 2.4-.6.7-2.4 2.2-2.4 2.9 0 .7 1.1 1.4 5.6 1.4s5.6-.7 5.6-1.4c0-.7-1.8-2.2-2.4-2.9-.5-.9-.7-2-.1-2.4.8-.5 2.5 0 3.5-.3.7-.2 1.5-.8.8-1.8-.9-1.3-3-1.4-3.8-2.1-.7-.6-1.3-1.8-.8-2.7.7-1.3 2.5-4.1 2.5-8.1C31.3 16.2 28.9 14 24 14z" fill="#fff" stroke="#000" stroke-width="1.1"/>
+            </svg>
+          </span>
           Snapchat
         </a>
       </div>
@@ -286,7 +310,7 @@
     const canvas = document.getElementById('starfield-canvas');
     const ctx = canvas.getContext('2d');
     let width, height, stars = [];
-    let mouseX = 0, mouseY = 0, centerX, centerY;
+    let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2, centerX, centerY;
     const STAR_COUNT = 1200;
 
     function random(min, max) {
@@ -298,12 +322,12 @@
         this.x = random(0, width);
         this.y = random(0, height);
         this.radius = random(0.45, 1.5);
-        this.opacity = random(0.5, 0.97);
+        this.opacity = random(0.55, 0.97);
         this.twinkleSpeed = random(0.002, 0.016);
         this.twinklePhase = random(0, Math.PI * 2);
         this.spikes = Math.floor(random(4, 8));
         this.baseOpacity = this.opacity;
-        this.parallax = random(0.15, 1.18);
+        this.parallax = random(0.12, 0.88);
         this.color = `hsla(${random(180,235)},100%,${random(75,98)}%,${this.opacity})`;
       }
       update() {
@@ -312,8 +336,8 @@
       }
       draw() {
         // Parallax: move by a fraction of the pointer offset from center
-        const ox = (mouseX - centerX) * this.parallax * 0.02;
-        const oy = (mouseY - centerY) * this.parallax * 0.02;
+        const ox = (mouseX - centerX) * this.parallax * 0.04;
+        const oy = (mouseY - centerY) * this.parallax * 0.04;
         ctx.save();
         ctx.translate(this.x + ox, this.y + oy);
         ctx.globalAlpha = this.opacity;
@@ -359,9 +383,9 @@
     function animate() {
       // Deep cosmic night blue gradient
       const grad = ctx.createLinearGradient(0, 0, 0, height);
-      grad.addColorStop(0, "#070910");
-      grad.addColorStop(0.3, "#101727");
-      grad.addColorStop(0.8, "#16203c");
+      grad.addColorStop(0, "#080b12");
+      grad.addColorStop(0.4, "#101727");
+      grad.addColorStop(0.95, "#161e2e");
       grad.addColorStop(1, "#223c5b");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, width, height);
@@ -375,6 +399,13 @@
     window.addEventListener('resize', resize);
     window.addEventListener('pointermove', e => {
       mouseX = e.clientX; mouseY = e.clientY;
+    }, {passive:true});
+    // fallback center for mobile
+    window.addEventListener('touchstart', e=>{
+      if(e.touches && e.touches.length) {
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
+      }
     }, {passive:true});
     resize();
     animate();
@@ -476,7 +507,7 @@
     animate();
   })();
 
-  // COMET: blue, glowing, physically-inspired tail, 1 every 5-8s, only one at a time
+  // COMET: blue, glowing, curved tail, 1 every 5-8s, only one at a time
   (() => {
     const canvas = document.getElementById('comet-canvas');
     const ctx = canvas.getContext('2d');
@@ -502,11 +533,11 @@
           this.vx = random(8, 15);
           this.vy = random(15, 22);
         }
-        this.length = random(600, 850);
+        this.length = random(600, 900);
         this.radius = random(19, 32);
         this.opacity = 1;
         this.trail = [];
-        this.trailMax = Math.floor(this.length / 4);
+        this.trailMax = Math.floor(this.length / 3);
         this.headColor = 'rgba(212,255,255,1)';
         this.glowColor = 'rgba(173,216,255,0.6)';
         this.tailColor = 'rgba(115,175,255,0.18)';
@@ -523,14 +554,16 @@
         for (let i = 1; i < this.trail.length; i++) {
           const p1 = this.trail[i - 1], p2 = this.trail[i];
           const t = i / this.trail.length;
-          ctx.strokeStyle = `rgba(120,190,255,${(1-t)*0.42*this.opacity})`;
-          ctx.lineWidth = 36 * (1-t) + 3;
+          ctx.save();
+          ctx.strokeStyle = `rgba(120,190,255,${(1-t)*0.38*this.opacity})`;
+          ctx.lineWidth = 36 * (1-t) + 2.5;
           ctx.beginPath();
           // Add a subtle "curve" for realism (simulate solar wind)
-          const curve = Math.sin(i/7) * 4 * t;
+          const curve = Math.sin(i/10) * 7 * t;
           ctx.moveTo(p1.x + curve, p1.y - curve);
           ctx.lineTo(p2.x + curve, p2.y - curve);
           ctx.stroke();
+          ctx.restore();
         }
         // Comet head: blue-white glowing ellipse with a spikey corona
         ctx.save();
