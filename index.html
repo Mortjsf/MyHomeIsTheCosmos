@@ -29,7 +29,6 @@
       height: 100%;
       width: 100%;
       box-sizing: border-box;
-      overflow-x: hidden;
       background: transparent;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #eee;
@@ -37,6 +36,13 @@
       flex-direction: column;
       align-items: center;
       position: relative;
+      /* Hide the vertical scroll bar but allow scrolling */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none;  /* IE 10+ */
+      overflow-x: hidden;
+    }
+    html::-webkit-scrollbar, body::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
     }
 
     #starfield-canvas, #shooting-star-canvas {
@@ -49,10 +55,6 @@
     }
     #shooting-star-canvas {
       z-index: -1;
-    }
-
-    body {
-      background: transparent !important;
     }
 
     header {
@@ -78,7 +80,6 @@
       border-radius: 12px;
       box-shadow: 0 0 20px #00ffe1aa;
       display: block;
-      background: none !important;
     }
     p, .extended-description {
       max-width: 600px;
@@ -86,7 +87,6 @@
       color: #ccc;
       font-size: 1.2rem;
       line-height: 1.4;
-      background: none !important;
     }
     .extended-description {
       color: #aaa;
@@ -100,7 +100,6 @@
       gap: 1rem;
       margin-top: 1.5rem;
       z-index: 1;
-      background: none !important;
     }
     .links a {
       display: flex;
@@ -120,6 +119,8 @@
     .links img {
       width: 24px; height: 24px;
       margin-right: 0.5rem;
+      display: inline-block;
+      background: none !important;
     }
     .bio-button {
       display: block;
@@ -149,7 +150,6 @@
       max-width: 800px;
       padding: 2rem 1rem;
       z-index: 1;
-      background: none !important;
     }
     .music-section > * {
       width: 100%;
@@ -179,10 +179,17 @@
     footer {
       text-align: center;
       color: #666;
-      padding: 2rem 1rem;
+      padding: 2rem 1rem 1.5rem;
       font-size: 0.9rem;
       z-index: 1;
       background: none !important;
+    }
+    .footer-by {
+      color: #888;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
     }
     @media (max-width: 900px) {
       .music-section {
@@ -216,10 +223,18 @@
       Myhomeisthecosmos is an electronic music producer blending the euphoric vibes of Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore. Expect lush atmospheres, pulsing rhythms, and melodies designed to elevate your soul and move your feet. Tune in and drift beyond the cosmos.
     </p>
     <div class="links">
-      <a href="https://open.spotify.com/artist/56413Wa0FcjVT5EIlu5kdZ" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/174/174872.png" alt="Spotify">Spotify</a>
-      <a href="https://www.instagram.com/myhomeisthecosmos/" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384015.png" alt="Instagram">Instagram</a>
-      <a href="https://www.facebook.com/profile.php?id=61569035439737" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">Facebook</a>
-      <a href="https://www.snapchat.com/add/rickybjornholm" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Snapchat">Snapchat</a>
+      <a href="https://open.spotify.com/artist/56413Wa0FcjVT5EIlu5kdZ" target="_blank" rel="noopener noreferrer">
+        <img src="https://cdn-icons-png.flaticon.com/512/174/174872.png" alt="Spotify">Spotify
+      </a>
+      <a href="https://www.instagram.com/myhomeisthecosmos/" target="_blank" rel="noopener noreferrer">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">Instagram
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61569035439737" target="_blank" rel="noopener noreferrer">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">Facebook
+      </a>
+      <a href="https://www.snapchat.com/add/rickybjornholm" target="_blank" rel="noopener noreferrer">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="Snapchat">Snapchat
+      </a>
     </div>
     <a class="bio-button" href="https://www.instagram.com/stories/highlights/18006632745407525/" target="_blank" rel="noopener noreferrer">View Artist Bio Highlight</a>
   </header>
@@ -230,7 +245,8 @@
     <div><iframe src="https://open.spotify.com/embed/album/4dU3hlbmWBYPuAx6FDLogI" loading="lazy" allowtransparency="true" allow="encrypted-media"></iframe></div>
   </section>
   <footer>
-    © 2024 MyHomeIsTheCosmos · All Rights Reserved · Built with 💫 in the cosmos
+    © 2024 MyHomeIsTheCosmos · All Rights Reserved
+    <div class="footer-by">Built with 💫 in the cosmos by Richard Bjornholm III</div>
   </footer>
   <script>
   // Spikey static starfield (no falling star effect, no Y movement, only parallax and twinkle)
@@ -239,7 +255,7 @@
     const ctx = canvas.getContext('2d');
     let width, height, stars = [];
     let mouseX = 0, mouseY = 0, centerX, centerY;
-    const STAR_COUNT = 900; // slightly less for clarity
+    const STAR_COUNT = 900;
 
     function random(min, max) {
       return Math.random() * (max - min) + min;
@@ -254,16 +270,15 @@
         this.opacity = random(0.6, 1);
         this.twinkleSpeed = random(0.005, 0.02);
         this.twinklePhase = random(0, Math.PI * 2);
-        this.spikes = Math.floor(random(5, 8)); // between 5 and 7 spikes
+        this.spikes = Math.floor(random(5, 8));
         this.baseOpacity = this.opacity;
-        this.color = `hsl(${random(180,230)},100%,90%)`;
+        this.color = `hsl(${random(190,220)},100%,90%)`;
       }
       update() {
         this.twinklePhase += this.twinkleSpeed;
         this.opacity = this.baseOpacity * (0.7 + 0.3 * Math.sin(this.twinklePhase));
       }
       draw() {
-        // Spikey star, like a tiny sunburst
         const ox = (mouseX - centerX) * (this.radius * 0.004);
         const oy = (mouseY - centerY) * (this.radius * 0.004);
         ctx.save();
@@ -310,10 +325,10 @@
       for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
     }
     function animate() {
-      // Darker night sky gradient
+      // Even darker night sky gradient (black to almost-black blue)
       const grad = ctx.createLinearGradient(0, 0, 0, height);
-      grad.addColorStop(0, "#070a13");
-      grad.addColorStop(1, "#0e1629");
+      grad.addColorStop(0, "#01030a");
+      grad.addColorStop(1, "#0a1830");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, width, height);
       centerX = width / 2; centerY = height / 2;
@@ -329,12 +344,12 @@
     animate();
   })();
 
-  // Shooting stars (canvas overlay, fewer, only dynamic element)
+  // Shooting stars (canvas overlay, much less frequent)
   (() => {
     const canvas = document.getElementById('shooting-star-canvas');
     const ctx = canvas.getContext('2d');
     let width, height, shootingStars = [];
-    const SHOOTING_STAR_CHANCE = 0.0017; // MUCH less frequent
+    const SHOOTING_STAR_CHANCE = 0.00018; // Even less frequent
 
     function random(min, max) {
       return Math.random() * (max - min) + min;
