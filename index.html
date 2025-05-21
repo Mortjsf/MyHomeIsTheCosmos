@@ -29,7 +29,7 @@
       height: 100%;
       width: 100%;
       box-sizing: border-box;
-      background: #000; /* Jet black for deep space */
+      background: #000;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #eee;
       display: flex;
@@ -44,16 +44,26 @@
       display: none; /* Chrome, Safari, Opera */
     }
 
+    /* Deep space gradient overlay, dark blue at bottom 10% */
+    #deep-space-gradient {
+      pointer-events: none;
+      position: fixed;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      z-index: -4;
+      background: linear-gradient(to bottom, #000 90%, #05122a 100%);
+      opacity: 1;
+    }
+
     #starfield-canvas, #shooting-star-canvas, #comet-canvas {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
-      z-index: -2;
       pointer-events: none;
       display: block;
     }
-    #shooting-star-canvas { z-index: -1; }
-    #comet-canvas { z-index: 0; }
+    #starfield-canvas { z-index: -3; }
+    #shooting-star-canvas { z-index: -2; }
+    #comet-canvas { z-index: -1; }
 
     header {
       position: relative;
@@ -114,11 +124,13 @@
     .links a:hover {
       background: rgba(0,255,225,0.14);
     }
-    .links img {
+    .links img,
+    .links .snapchat-logo {
       width: 24px; height: 24px;
       margin-right: 0.5rem;
       display: inline-block;
       background: none !important;
+      /* No filter for snapchat logo */
     }
     .bio-button {
       display: block;
@@ -212,6 +224,7 @@
   </style>
 </head>
 <body>
+  <div id="deep-space-gradient"></div>
   <canvas id="starfield-canvas"></canvas>
   <canvas id="shooting-star-canvas"></canvas>
   <canvas id="comet-canvas"></canvas>
@@ -232,8 +245,13 @@
         <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">Facebook
       </a>
       <a href="https://www.snapchat.com/add/rickybjornholm" target="_blank" rel="noopener noreferrer">
-        <!-- Ghostface Chillah style Snapchat logo (yellow ghost) -->
-        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/snapchat.svg" alt="Snapchat" style="background: #FFFC00; border-radius: 6px; padding:2px; width:24px; height:24px;">
+        <!-- Authentic Snapchat logo: Ghostface Chillah ghost on yellow background, with circle and no padding -->
+        <span class="snapchat-logo" style="display:inline-block;width:24px;height:24px;vertical-align:middle;margin-right:0.5rem;border-radius:6px;overflow:hidden;background:#FFFC00;">
+          <svg viewBox="0 0 48 48" width="24" height="24" style="display:block;">
+            <circle cx="24" cy="24" r="24" fill="#FFFC00"/>
+            <path d="M24 10c-4.6 0-7 2.1-7 7s1.8 7.2 2.4 8.2c.4.7-.1 1.8-.8 2.2s-2.8.7-3.7 1.9c-.7.9.1 1.4.7 1.6.9.3 2.5-.2 3.2.2.6.3.4 1.3-.1 2.1-.5.7-2.2 2.2-2.2 2.7 0 .6 1.1 1.3 5.5 1.3s5.5-.7 5.5-1.3c0-.5-1.7-2-2.2-2.7-.5-.8-.7-1.8-.1-2.1.7-.4 2.3.1 3.2-.2.7-.2 1.4-.7.7-1.6-.9-1.2-3.1-1.4-3.7-1.9-.7-.4-1.2-1.5-.8-2.2.6-1 2.4-3.3 2.4-8.2s-2.4-7-7-7z" fill="#fff" stroke="#000" stroke-width="1"/>
+          </svg>
+        </span>
         Snapchat
       </a>
     </div>
@@ -250,13 +268,13 @@
     <div class="footer-by">Built with 💫 in the cosmos by Richard Bjornholm III</div>
   </footer>
   <script>
-  // Spikey static starfield (no falling star effect, no Y movement, only parallax and twinkle)
+  // Static starfield (shining through darkness, like a telescope view)
   (() => {
     const canvas = document.getElementById('starfield-canvas');
     const ctx = canvas.getContext('2d');
     let width, height, stars = [];
     let mouseX = 0, mouseY = 0, centerX, centerY;
-    const STAR_COUNT = 900;
+    const STAR_COUNT = 950;
 
     function random(min, max) {
       return Math.random() * (max - min) + min;
@@ -267,13 +285,13 @@
       reset() {
         this.x = random(0, width);
         this.y = random(0, height);
-        this.radius = random(0.5, 1.2);
-        this.opacity = random(0.6, 1);
-        this.twinkleSpeed = random(0.005, 0.02);
+        this.radius = random(0.5, 1.3);
+        this.opacity = random(0.65, 1);
+        this.twinkleSpeed = random(0.004, 0.018);
         this.twinklePhase = random(0, Math.PI * 2);
         this.spikes = Math.floor(random(5, 8));
         this.baseOpacity = this.opacity;
-        this.color = `hsl(${random(190,220)},100%,90%)`;
+        this.color = `hsla(${random(180,235)},100%,85%,${this.opacity})`;
       }
       update() {
         this.twinklePhase += this.twinkleSpeed;
@@ -304,7 +322,7 @@
         }
         ctx.closePath();
         ctx.shadowColor = this.color;
-        ctx.shadowBlur = 7;
+        ctx.shadowBlur = 9;
         ctx.fillStyle = this.color;
         ctx.fill();
         ctx.globalAlpha = 1;
@@ -326,8 +344,7 @@
       for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
     }
     function animate() {
-      ctx.fillStyle = "#000";
-      ctx.fillRect(0, 0, width, height);
+      ctx.clearRect(0, 0, width, height);
       centerX = width / 2; centerY = height / 2;
       for (const star of stars) {
         star.update();
@@ -341,12 +358,12 @@
     animate();
   })();
 
-  // Shooting stars (canvas overlay, 1-2 every 3-5 seconds)
+  // Shooting stars that look like real shooting stars
   (() => {
     const canvas = document.getElementById('shooting-star-canvas');
     const ctx = canvas.getContext('2d');
     let width, height, shootingStars = [];
-    // ~60fps, so for 1-2 every 3-5 seconds: probability per frame between 0.007 - 0.012
+    // 1-2 every 3-5 seconds: at 60fps, 0.01 gives about that rate
     const SHOOTING_STAR_CHANCE = 0.01;
 
     function random(min, max) {
@@ -355,77 +372,63 @@
     class ShootingStar {
       constructor() { this.reset(); }
       reset() {
-        if (Math.random() < 0.5) {
-          this.x = random(width * 0.15, width * 0.85);
-          this.y = random(0, height * 0.22);
-          this.vx = random(-10, 10);
-          this.vy = random(7, 19);
-        } else {
-          this.x = random(0, width * 0.18);
-          this.y = random(height * 0.15, height * 0.90);
-          this.vx = random(12, 22);
-          this.vy = random(-12, 12);
-        }
-        this.length = random(90, 180);
-        this.size = random(1.2, 2.5);
-        this.life = 0; this.maxLife = random(44, 66);
+        this.x = random(0.1 * width, 0.9 * width);
+        this.y = random(0, 0.3 * height);
+        this.length = random(120, 220);
+        this.angle = random(Math.PI * 0.6, Math.PI * 0.85);
+        this.speed = random(14, 23);
+        this.size = random(1.4, 2.8);
         this.trail = [];
+        this.life = 0;
+        this.maxLife = random(35, 52);
+        // Colors for "real" meteors
+        this.headColor = 'rgba(255,255,255,1)';
+        this.trailColor = 'rgba(255,255,255,0.6)';
+        this.glowColor = 'rgba(200,230,255,0.32)';
       }
       update() {
         this.life++;
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
         this.trail.push({ x: this.x, y: this.y });
         if (this.trail.length > this.length) this.trail.shift();
-        this.x += this.vx;
-        this.y += this.vy;
-        if (
-          this.x > width + this.length ||
-          this.y > height + this.length ||
-          this.x < -this.length ||
-          this.y < -this.length ||
-          this.life > this.maxLife
-        ) this.reset();
       }
       draw() {
-        ctx.lineCap = 'round';
+        // Trail (fading)
+        ctx.save();
         ctx.beginPath();
         for (let i = this.trail.length - 1; i > 0; i--) {
           const p = this.trail[i], prev = this.trail[i - 1];
           const a = i / this.trail.length;
-          ctx.strokeStyle = `rgba(255,255,255,${a*0.8})`;
-          ctx.lineWidth = this.size;
+          ctx.strokeStyle = `rgba(255,255,255,${a * 0.6})`;
+          ctx.lineWidth = this.size * (1-a) + 0.7;
           ctx.moveTo(prev.x, prev.y);
           ctx.lineTo(p.x, p.y);
         }
+        ctx.shadowColor = this.glowColor;
+        ctx.shadowBlur = 12;
         ctx.stroke();
-        const head = this.trail[this.trail.length - 1];
-        if (head) {
-          ctx.save();
-          ctx.translate(head.x, head.y);
-          // Spikey star head
-          const spikes = 5;
-          const outer = this.size * 6.2;
-          const inner = outer * 0.5;
-          let rot = Math.PI / 2 * 3;
-          ctx.beginPath();
-          ctx.moveTo(0, -outer);
-          for (let i = 0; i < spikes; i++) {
-            let sx = Math.cos(rot) * outer;
-            let sy = Math.sin(rot) * outer;
-            ctx.lineTo(sx, sy);
-            rot += Math.PI / spikes;
-            sx = Math.cos(rot) * inner;
-            sy = Math.sin(rot) * inner;
-            ctx.lineTo(sx, sy);
-            rot += Math.PI / spikes;
-          }
-          ctx.closePath();
-          let grad = ctx.createRadialGradient(0, 0, 0, 0, 0, outer);
-          grad.addColorStop(0, 'rgba(255,255,255,1)');
-          grad.addColorStop(1, 'rgba(255,255,255,0)');
-          ctx.fillStyle = grad;
-          ctx.fill();
-          ctx.restore();
-        }
+        ctx.shadowBlur = 0;
+        ctx.restore();
+
+        // Head, a glowing elongated ellipse
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, this.size * 3.5, this.size * 1.6, 0, 0, 2*Math.PI);
+        let grad = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size * 5);
+        grad.addColorStop(0, this.headColor);
+        grad.addColorStop(1, this.glowColor);
+        ctx.fillStyle = grad;
+        ctx.globalAlpha = 0.95;
+        ctx.shadowColor = '#fff';
+        ctx.shadowBlur = 15;
+        ctx.fill();
+        ctx.restore();
+      }
+      isVisible() {
+        return this.x < width + 100 && this.y < height + 100 && this.life < this.maxLife;
       }
     }
     function resize() {
@@ -445,8 +448,7 @@
       for (let i = shootingStars.length - 1; i >= 0; i--) {
         shootingStars[i].update();
         shootingStars[i].draw();
-        if (shootingStars[i].life > shootingStars[i].maxLife)
-          shootingStars.splice(i,1);
+        if (!shootingStars[i].isVisible()) shootingStars.splice(i,1);
       }
       requestAnimationFrame(animate);
     }
@@ -455,7 +457,7 @@
     animate();
   })();
 
-  // Rare comet (every 5-10 seconds, only one on screen at a time)
+  // Rare comet (realistic, blueish, every 5–10 seconds, only one at a time)
   (() => {
     const canvas = document.getElementById('comet-canvas');
     const ctx = canvas.getContext('2d');
@@ -469,23 +471,26 @@
 
     class Comet {
       constructor() {
-        // Start off-screen left or top, and move diagonally
+        // Start off left/top, move diagonally
         if (Math.random() < 0.5) {
-          this.x = -120;
-          this.y = random(height * 0.1, height * 0.4);
-          this.vx = random(7, 14);
-          this.vy = random(2, 7);
+          this.x = -180;
+          this.y = random(height * 0.18, height * 0.40);
+          this.vx = random(11, 18);
+          this.vy = random(4, 9);
         } else {
-          this.x = random(width * 0.1, width * 0.8);
-          this.y = -120;
-          this.vx = random(4, 8);
-          this.vy = random(7, 14);
+          this.x = random(width * 0.10, width * 0.7);
+          this.y = -180;
+          this.vx = random(7, 13);
+          this.vy = random(12, 18);
         }
-        this.length = random(250, 400);
-        this.radius = random(6, 10);
+        this.length = random(380, 520);
+        this.radius = random(16, 22);
         this.opacity = 1;
         this.trail = [];
-        this.trailMax = Math.floor(this.length / 3);
+        this.trailMax = Math.floor(this.length / 5);
+        this.tailColor = 'rgba(173,216,255,0.18)';
+        this.headColor = 'rgba(222,255,255,1)';
+        this.glowColor = 'rgba(173,216,255,0.65)';
       }
       update() {
         this.trail.push({ x: this.x, y: this.y });
@@ -493,44 +498,32 @@
         this.x += this.vx;
         this.y += this.vy;
         // Fade out as it leaves the screen
-        if (this.x > width + 160 || this.y > height + 160) this.opacity -= 0.02;
+        if (this.x > width + 200 || this.y > height + 200) this.opacity -= 0.013;
       }
       draw() {
-        // Trail
+        // Tail: blue fading, wide at origin
         for (let i = 1; i < this.trail.length; i++) {
           const p1 = this.trail[i - 1], p2 = this.trail[i];
           const t = i / this.trail.length;
-          ctx.strokeStyle = `rgba(173,216,255,${(1-t)*0.25*this.opacity})`;
-          ctx.lineWidth = 18 * (1-t) + 2;
+          ctx.strokeStyle = `rgba(173,216,255,${(1-t)*0.48*this.opacity})`;
+          ctx.lineWidth = 36 * (1-t) + 5;
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(p2.x, p2.y);
           ctx.stroke();
         }
-        // Comet head (spikey)
+        // Comet head: glowing blue-white ellipse
         ctx.save();
         ctx.translate(this.x, this.y);
-        ctx.globalAlpha = this.opacity;
         ctx.beginPath();
-        let rot = Math.PI / 2 * 3;
-        let spikes = 9, outerRadius = this.radius * 1.4, innerRadius = outerRadius * 0.55;
-        ctx.moveTo(0, -outerRadius);
-        for (let i = 0; i < spikes; i++) {
-          let sx = Math.cos(rot) * outerRadius;
-          let sy = Math.sin(rot) * outerRadius;
-          ctx.lineTo(sx, sy);
-          rot += Math.PI / spikes;
-          sx = Math.cos(rot) * innerRadius;
-          sy = Math.sin(rot) * innerRadius;
-          ctx.lineTo(sx, sy);
-          rot += Math.PI / spikes;
-        }
-        ctx.closePath();
-        let grad = ctx.createRadialGradient(0, 0, 0, 0, 0, outerRadius * 2.5);
-        grad.addColorStop(0, 'rgba(173,216,255,1)');
+        ctx.ellipse(0, 0, this.radius * 1.45, this.radius * 0.8, 0, 0, 2*Math.PI);
+        let grad = ctx.createRadialGradient(0, 0, 0, 0, 0, this.radius * 2.4);
+        grad.addColorStop(0, this.headColor);
+        grad.addColorStop(0.3, this.glowColor);
         grad.addColorStop(1, 'rgba(173,216,255,0)');
         ctx.shadowColor = '#fff';
-        ctx.shadowBlur = 32;
+        ctx.shadowBlur = 36;
+        ctx.globalAlpha = this.opacity;
         ctx.fillStyle = grad;
         ctx.fill();
         ctx.globalAlpha = 1;
