@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MyHomeIsTheCosmos</title>
   <meta name="description" content="Myhomeisthecosmos is an electronic music producer blending the euphoric vibes of Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore.">
+  <!-- Structured Data for SEO -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -25,29 +26,29 @@
       margin: 0;
       padding: 0;
       min-height: 100%;
-      height: 100%;
       width: 100%;
       box-sizing: border-box;
-      /* Night sky gradient directly as background, NOT jet black */
-      background: linear-gradient(to bottom, #10101a 0%, #223c5b 100%);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #eee;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
+      background: transparent;
+      overflow-x: hidden;
+      box-sizing: border-box;
       scrollbar-width: none;
       -ms-overflow-style: none;
-      overflow-x: hidden;
     }
     html::-webkit-scrollbar, body::-webkit-scrollbar {
       display: none;
+    }
+    *, *::before, *::after {
+      box-sizing: inherit;
     }
 
     #starfield-canvas, #shooting-star-canvas, #comet-canvas {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
+      min-width: 100vw; min-height: 100vh;
+      max-width: 100vw; max-height: 100vh;
       pointer-events: none;
       display: block;
     }
@@ -119,6 +120,17 @@
       margin-right: 0.5rem;
       display: inline-block;
       background: none !important;
+    }
+    /* snap logo fix: no filter, square padding, circular border, yellow background */
+    .links .snapchat-logo {
+      width: 24px;
+      height: 24px;
+      margin-right: 0.5rem;
+      border-radius: 6px;
+      background: #FFFC00;
+      display: inline-block;
+      padding: 0;
+      object-fit: contain;
     }
     .bio-button {
       display: block;
@@ -232,7 +244,7 @@
         <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">Facebook
       </a>
       <a href="https://www.snapchat.com/add/rickybjornholm" target="_blank" rel="noopener noreferrer">
-        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="Snapchat">Snapchat
+        <img class="snapchat-logo" src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="Snapchat">Snapchat
       </a>
     </div>
     <a class="bio-button" href="https://www.instagram.com/stories/highlights/18006632745407525/" target="_blank" rel="noopener noreferrer">View Artist Bio Highlight</a>
@@ -248,13 +260,13 @@
     <div class="footer-by">Built with 💫 in the cosmos by Richard Bjornholm III</div>
   </footer>
   <script>
-  // Night sky gradient (stars overlaid on top, like earlier revisions)
+  // Night sky gradient with 1200 stars, parallax, twinkle, and pointer-follow
   (() => {
     const canvas = document.getElementById('starfield-canvas');
     const ctx = canvas.getContext('2d');
     let width, height, stars = [];
     let mouseX = 0, mouseY = 0, centerX, centerY;
-    const STAR_COUNT = 950;
+    const STAR_COUNT = 1200;
 
     function random(min, max) {
       return Math.random() * (max - min) + min;
@@ -266,20 +278,22 @@
         this.x = random(0, width);
         this.y = random(0, height);
         this.radius = random(0.5, 1.3);
-        this.opacity = random(0.65, 1);
-        this.twinkleSpeed = random(0.004, 0.018);
+        this.opacity = random(0.5, 0.99);
+        this.twinkleSpeed = random(0.002, 0.015);
         this.twinklePhase = random(0, Math.PI * 2);
-        this.spikes = Math.floor(random(5, 8));
+        this.spikes = Math.floor(random(4, 8));
         this.baseOpacity = this.opacity;
-        this.color = `hsla(${random(180,235)},100%,85%,${this.opacity})`;
+        this.parallax = random(0.18, 1.25);
+        this.color = `hsla(${random(180,235)},100%,${random(70,92)}%,${this.opacity})`;
       }
       update() {
         this.twinklePhase += this.twinkleSpeed;
-        this.opacity = this.baseOpacity * (0.7 + 0.3 * Math.sin(this.twinklePhase));
+        this.opacity = this.baseOpacity * (0.72 + 0.28 * Math.sin(this.twinklePhase));
       }
       draw() {
-        const ox = (mouseX - centerX) * (this.radius * 0.004);
-        const oy = (mouseY - centerY) * (this.radius * 0.004);
+        // Parallax: move by a fraction of the pointer offset from center
+        const ox = (mouseX - centerX) * this.parallax * 0.02;
+        const oy = (mouseY - centerY) * this.parallax * 0.02;
         ctx.save();
         ctx.translate(this.x + ox, this.y + oy);
         ctx.globalAlpha = this.opacity;
@@ -288,7 +302,7 @@
         let x = 0, y = 0;
         let spikes = this.spikes,
           outerRadius = this.radius * 4.5,
-          innerRadius = outerRadius * 0.42;
+          innerRadius = outerRadius * 0.45;
         ctx.moveTo(0, -outerRadius);
         for (let i = 0; i < spikes; i++) {
           x = Math.cos(rot) * outerRadius;
@@ -324,9 +338,11 @@
       for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
     }
     function animate() {
-      // Deep night blue gradient, stars shine over top
+      // Deep cosmic night blue gradient
       const grad = ctx.createLinearGradient(0, 0, 0, height);
-      grad.addColorStop(0, "#10101a");
+      grad.addColorStop(0, "#090c10");
+      grad.addColorStop(0.25, "#121a2b");
+      grad.addColorStop(0.7, "#16203c");
       grad.addColorStop(1, "#223c5b");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, width, height);
@@ -339,7 +355,16 @@
       requestAnimationFrame(animate);
     }
     window.addEventListener('resize', resize);
-    window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+    // Use pointermove for both mouse and touch
+    window.addEventListener('pointermove', e => {
+      if (e.touches && e.touches.length) {
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
+      } else {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      }
+    });
     resize();
     animate();
   })();
@@ -349,7 +374,8 @@
     const canvas = document.getElementById('shooting-star-canvas');
     const ctx = canvas.getContext('2d');
     let width, height, shootingStars = [];
-    const SHOOTING_STAR_CHANCE = 0.01;
+    // 1-3 every 3-5 seconds (at 60fps): 0.015-0.02
+    const SHOOTING_STAR_CHANCE = 0.017;
 
     function random(min, max) {
       return Math.random() * (max - min) + min;
@@ -357,12 +383,12 @@
     class ShootingStar {
       constructor() { this.reset(); }
       reset() {
-        this.x = random(0.1 * width, 0.9 * width);
+        this.x = random(0.05 * width, 0.95 * width);
         this.y = random(0, 0.3 * height);
         this.length = random(120, 220);
         this.angle = random(Math.PI * 0.6, Math.PI * 0.85);
-        this.speed = random(14, 23);
-        this.size = random(1.4, 2.8);
+        this.speed = random(15, 27);
+        this.size = random(1.7, 3.2);
         this.trail = [];
         this.life = 0;
         this.maxLife = random(35, 52);
@@ -384,7 +410,7 @@
           const p = this.trail[i], prev = this.trail[i - 1];
           const a = i / this.trail.length;
           ctx.strokeStyle = `rgba(255,255,255,${a * 0.6})`;
-          ctx.lineWidth = this.size * (1-a) + 0.7;
+          ctx.lineWidth = this.size * (1 - a) + 0.7;
           ctx.moveTo(prev.x, prev.y);
           ctx.lineTo(p.x, p.y);
         }
@@ -398,14 +424,14 @@
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
         ctx.beginPath();
-        ctx.ellipse(0, 0, this.size * 3.5, this.size * 1.6, 0, 0, 2*Math.PI);
+        ctx.ellipse(0, 0, this.size * 3.8, this.size * 1.8, 0, 0, 2*Math.PI);
         let grad = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size * 5);
         grad.addColorStop(0, this.headColor);
         grad.addColorStop(1, this.glowColor);
         ctx.fillStyle = grad;
         ctx.globalAlpha = 0.95;
         ctx.shadowColor = '#fff';
-        ctx.shadowBlur = 15;
+        ctx.shadowBlur = 16;
         ctx.fill();
         ctx.restore();
       }
@@ -439,7 +465,7 @@
     animate();
   })();
 
-  // Rare comet (realistic, blueish, every 5–10 seconds, only one at a time)
+  // Rare comet (realistic, blueish, every 5–8 seconds, only one at a time)
   (() => {
     const canvas = document.getElementById('comet-canvas');
     const ctx = canvas.getContext('2d');
@@ -454,22 +480,22 @@
     class Comet {
       constructor() {
         if (Math.random() < 0.5) {
-          this.x = -180;
-          this.y = random(height * 0.18, height * 0.40);
-          this.vx = random(11, 18);
-          this.vy = random(4, 9);
+          this.x = -200;
+          this.y = random(height * 0.12, height * 0.26);
+          this.vx = random(10, 17);
+          this.vy = random(6, 13);
         } else {
-          this.x = random(width * 0.10, width * 0.7);
-          this.y = -180;
-          this.vx = random(7, 13);
-          this.vy = random(12, 18);
+          this.x = random(width * 0.12, width * 0.7);
+          this.y = -200;
+          this.vx = random(9, 14);
+          this.vy = random(12, 17);
         }
-        this.length = random(380, 520);
-        this.radius = random(16, 22);
+        this.length = random(420, 650);
+        this.radius = random(18, 29);
         this.opacity = 1;
         this.trail = [];
-        this.trailMax = Math.floor(this.length / 5);
-        this.tailColor = 'rgba(173,216,255,0.18)';
+        this.trailMax = Math.floor(this.length / 4);
+        this.tailColor = 'rgba(153,210,255,0.17)';
         this.headColor = 'rgba(222,255,255,1)';
         this.glowColor = 'rgba(173,216,255,0.65)';
       }
@@ -478,13 +504,13 @@
         if (this.trail.length > this.trailMax) this.trail.shift();
         this.x += this.vx;
         this.y += this.vy;
-        if (this.x > width + 200 || this.y > height + 200) this.opacity -= 0.013;
+        if (this.x > width + 220 || this.y > height + 220) this.opacity -= 0.012;
       }
       draw() {
         for (let i = 1; i < this.trail.length; i++) {
           const p1 = this.trail[i - 1], p2 = this.trail[i];
           const t = i / this.trail.length;
-          ctx.strokeStyle = `rgba(173,216,255,${(1-t)*0.48*this.opacity})`;
+          ctx.strokeStyle = `rgba(153,210,255,${(1-t)*0.4*this.opacity})`;
           ctx.lineWidth = 36 * (1-t) + 5;
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
@@ -494,13 +520,13 @@
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.beginPath();
-        ctx.ellipse(0, 0, this.radius * 1.45, this.radius * 0.8, 0, 0, 2*Math.PI);
-        let grad = ctx.createRadialGradient(0, 0, 0, 0, 0, this.radius * 2.4);
+        ctx.ellipse(0, 0, this.radius * 1.5, this.radius * 0.95, 0, 0, 2*Math.PI);
+        let grad = ctx.createRadialGradient(0, 0, 0, 0, 0, this.radius * 2.7);
         grad.addColorStop(0, this.headColor);
         grad.addColorStop(0.3, this.glowColor);
-        grad.addColorStop(1, 'rgba(173,216,255,0)');
+        grad.addColorStop(1, 'rgba(153,210,255,0)');
         ctx.shadowColor = '#fff';
-        ctx.shadowBlur = 36;
+        ctx.shadowBlur = 38;
         ctx.globalAlpha = this.opacity;
         ctx.fillStyle = grad;
         ctx.fill();
@@ -533,14 +559,14 @@
         comet.draw();
         if (!comet.isVisible()) {
           comet = null;
-          nextCometTime = Date.now() + random(5000, 10000);
+          nextCometTime = Date.now() + random(5000, 8000);
         }
       }
       requestAnimationFrame(animate);
     }
     window.addEventListener('resize', resize);
     resize();
-    nextCometTime = Date.now() + random(5000, 10000);
+    nextCometTime = Date.now() + random(5000, 8000);
     animate();
   })();
   </script>
