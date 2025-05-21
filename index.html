@@ -136,17 +136,27 @@
     .links a:hover {
       background: rgba(0,255,225,0.14);
     }
-    .links img,
+    .links img {
+      width: 24px; height: 24px;
+      margin-right: 0.5rem;
+      display: inline-block;
+      background: none !important;
+      border-radius: 6px;
+      object-fit: contain;
+      box-shadow: none;
+      border: none;
+      padding: 0;
+    }
     .snapchat-logo-img {
       width: 28px; height: 28px;
       margin-right: 0.5rem;
-      display: inline-block;
       background: #FFFC00;
       border-radius: 50%;
       object-fit: contain;
       box-shadow: 0 0 0 1.5px #efe711, 0 0 8px #fff20030;
       border: 1.5px solid #efe711;
       padding: 2.5px;
+      display: inline-block;
     }
     .bio-button {
       display: block;
@@ -390,7 +400,7 @@
     animate();
   })();
 
-  // SHOOTING STARS, realistic, 1-3 every 3-5 seconds
+  // SHOOTING STARS: now spikey, star-like, shooting from the background
   (() => {
     const canvas = document.getElementById('shooting-star-canvas');
     const ctx = canvas.getContext('2d');
@@ -409,10 +419,12 @@
         this.length = random(120, 220);
         this.angle = random(Math.PI * 0.59, Math.PI * 0.86);
         this.speed = random(18, 28);
-        this.size = random(1.5, 3.5);
+        this.size = random(2.2, 4.1); // slightly larger to show star shape
+        this.spikes = Math.floor(random(5,8));
         this.trail = [];
         this.life = 0;
         this.maxLife = random(32, 50);
+        this.color = "rgba(255,255,255,1)";
       }
       update() {
         this.life++;
@@ -422,7 +434,7 @@
         if (this.trail.length > this.length) this.trail.shift();
       }
       draw() {
-        // Main trail
+        // Trail
         ctx.save();
         ctx.beginPath();
         for (let i = this.trail.length - 1; i > 0; i--) {
@@ -439,21 +451,33 @@
         ctx.shadowBlur = 0;
         ctx.restore();
 
-        // Glowing head (elongated)
+        // Glowing star head (star-shaped, NOT oval)
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
+        ctx.globalAlpha = 0.95;
+
+        // Draw spikey star
         ctx.beginPath();
-        ctx.ellipse(0, 0, this.size * 4.5, this.size * 1.5, 0, 0, 2*Math.PI);
-        const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size * 8);
-        grad.addColorStop(0, "#fff");
-        grad.addColorStop(0.4, "#fff");
-        grad.addColorStop(1, "rgba(255,255,255,0)");
-        ctx.fillStyle = grad;
-        ctx.globalAlpha = 0.98;
-        ctx.shadowColor = '#fff';
-        ctx.shadowBlur = 18;
+        let rot = Math.PI / 2 * 3;
+        let spikes = this.spikes, outerRadius = this.size * 4.5, innerRadius = outerRadius * 0.44;
+        ctx.moveTo(0, -outerRadius);
+        for (let i = 0; i < spikes; i++) {
+          let x = Math.cos(rot) * outerRadius;
+          let y = Math.sin(rot) * outerRadius;
+          ctx.lineTo(x, y);
+          rot += Math.PI / spikes;
+          x = Math.cos(rot) * innerRadius;
+          y = Math.sin(rot) * innerRadius;
+          ctx.lineTo(x, y);
+          rot += Math.PI / spikes;
+        }
+        ctx.closePath();
+        ctx.shadowColor = "#fff";
+        ctx.shadowBlur = 20;
+        ctx.fillStyle = "#fff";
         ctx.fill();
+        ctx.globalAlpha = 1;
         ctx.restore();
       }
       isVisible() {
@@ -486,7 +510,7 @@
     animate();
   })();
 
-  // COMET: blue, glowing, curved tail, 1 every 5-8s, only one at a time, small head like shooting star
+  // COMET: blue, glowing, curved tail, 1 every 5-8s, only one at a time, small head like shooting star, shorter tail
   (() => {
     const canvas = document.getElementById('comet-canvas');
     const ctx = canvas.getContext('2d');
@@ -512,8 +536,8 @@
           this.vx = random(8, 15);
           this.vy = random(15, 22);
         }
-        this.length = random(600, 900);
-        this.radius = random(10, 16); // Head is now 1/2 previous size
+        this.length = random(300, 450); // Tail is now half as long
+        this.radius = random(7, 11); // Head is now half previous size
         this.opacity = 1;
         this.trail = [];
         this.trailMax = Math.floor(this.length / 3);
@@ -529,22 +553,22 @@
         if (this.x > width + 240 || this.y > height + 240) this.opacity -= 0.013;
       }
       draw() {
-        // Physically-inspired, slightly curved tail
+        // Curved tail
         for (let i = 1; i < this.trail.length; i++) {
           const p1 = this.trail[i - 1], p2 = this.trail[i];
           const t = i / this.trail.length;
           ctx.save();
           ctx.strokeStyle = `rgba(120,190,255,${(1-t)*0.38*this.opacity})`;
-          ctx.lineWidth = 36 * (1-t) + 2.5;
+          ctx.lineWidth = 20 * (1-t) + 2;
           ctx.beginPath();
           // Add a subtle "curve" for realism (simulate solar wind)
-          const curve = Math.sin(i/10) * 7 * t;
+          const curve = Math.sin(i/10) * 4 * t;
           ctx.moveTo(p1.x + curve, p1.y - curve);
           ctx.lineTo(p2.x + curve, p2.y - curve);
           ctx.stroke();
           ctx.restore();
         }
-        // Comet head: blue-white glowing ellipse (no spikes, just like shooting star)
+        // Comet head: blue-white glowing ellipse (no spikes, small and clean)
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(Math.atan2(this.vy, this.vx));
@@ -555,7 +579,7 @@
         grad.addColorStop(0.4, this.headColor);
         grad.addColorStop(1, this.glowColor);
         ctx.shadowColor = '#bdf';
-        ctx.shadowBlur = 34;
+        ctx.shadowBlur = 22;
         ctx.globalAlpha = this.opacity;
         ctx.fillStyle = grad;
         ctx.fill();
