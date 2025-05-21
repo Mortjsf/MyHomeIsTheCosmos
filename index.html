@@ -36,14 +36,30 @@
       align-items: center;
       position: relative;
     }
-    #starfield {
+
+    body {
+      /* fallback for CSS only */
+      background: linear-gradient(to bottom, #10101a 0%, #223c5b 100%);
+    }
+
+    #starfield-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: -2;
+      pointer-events: none;
+      display: block;
+    }
+
+    #shooting-star-canvas {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
       z-index: -1;
-      background: radial-gradient(ellipse at center, #0a0a12 0%, #000000 80%);
       pointer-events: none;
+      display: block;
     }
+
     header {
       position: relative;
       text-align: center;
@@ -169,7 +185,8 @@
   </style>
 </head>
 <body>
-  <canvas id="starfield"></canvas>
+  <canvas id="starfield-canvas"></canvas>
+  <canvas id="shooting-star-canvas"></canvas>
   <header>
     <h1>MyHomeIsTheCosmos</h1>
     <img src="https://i.ibb.co/mCQ3GSf3/Img.jpg" alt="MyHomeIsTheCosmos Album Art" class="header-image" loading="lazy" />
@@ -194,17 +211,16 @@
     © 2024 MyHomeIsTheCosmos · All Rights Reserved · Built with 💫 in the cosmos
   </footer>
   <script>
+  // Twinkling, parallax starfield (background)
   (() => {
-    const canvas = document.getElementById('starfield');
+    const canvas = document.getElementById('starfield-canvas');
     const ctx = canvas.getContext('2d');
-    let width, height, stars = [], shootingStars = [];
-    const STAR_COUNT = 1200, SHOOTING_STAR_CHANCE = 0.002;
+    let width, height, stars = [];
     let mouseX = 0, mouseY = 0, centerX, centerY;
-
+    const STAR_COUNT = 1200;
     function random(min, max) {
       return Math.random() * (max - min) + min;
     }
-
     class Star {
       constructor() { this.reset(); }
       reset() {
@@ -215,14 +231,20 @@
         this.speed = this.radius * 0.15 + 0.03;
         this.twinkleSpeed = random(0.005, 0.02);
         this.twinklePhase = random(0, Math.PI * 2);
+        this.baseOpacity = this.opacity;
       }
       update() {
         this.y += this.speed;
         if (this.y > height) this.y = 0;
         this.twinklePhase += this.twinkleSpeed;
-        this.opacity = 0.5 + 0.5 * Math.sin(this.twinklePhase);
+        this.opacity = this.baseOpacity * (0.7 + 0.3 * Math.sin(this.twinklePhase));
       }
       draw() {
+        // Parallax offset
+        const ox = (mouseX - centerX) * (this.radius * 0.002);
+        const oy = (mouseY - centerY) * (this.radius * 0.002);
+        ctx.save();
+        ctx.translate(ox, oy);
         const hue = 200 + 50 * Math.sin(this.twinklePhase * 0.5);
         const color = `hsla(${hue},80%,90%,${this.opacity})`;
         const glow = this.radius * 4;
@@ -237,27 +259,68 @@
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         ctx.fill();
+        ctx.restore();
       }
     }
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const pixelRatio = window.devicePixelRatio || 1;
+      canvas.width = width * pixelRatio;
+      canvas.height = height * pixelRatio;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(pixelRatio, pixelRatio);
+      stars = [];
+      for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
+    }
+    function animate() {
+      // Draw base gradient for depth
+      const grad = ctx.createLinearGradient(0, 0, 0, height);
+      grad.addColorStop(0, "#10101a");
+      grad.addColorStop(1, "#223c5b");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
+      centerX = width / 2; centerY = height / 2;
+      for (const star of stars) {
+        star.update();
+        star.draw();
+      }
+      requestAnimationFrame(animate);
+    }
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+    resize();
+    animate();
+  })();
 
+  // Shooting stars (canvas overlay)
+  (() => {
+    const canvas = document.getElementById('shooting-star-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, shootingStars = [];
+    const SHOOTING_STAR_CHANCE = 0.007;
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
     class ShootingStar {
       constructor() { this.reset(); }
       reset() {
         if (Math.random() < 0.5) {
-          this.x = random(0, width);
-          this.y = 0;
-          this.vx = random(-15, 15);
-          this.vy = random(15, 25);
+          this.x = random(width * 0.1, width * 0.9);
+          this.y = random(0, height * 0.25);
+          this.vx = random(-20, 20);
+          this.vy = random(10, 28);
         } else {
-          this.x = 0;
-          this.y = random(0, height);
-          this.vx = random(15, 25);
-          this.vy = random(-15, 15);
+          this.x = random(0, width * 0.25);
+          this.y = random(height * 0.1, height * 0.9);
+          this.vx = random(18, 32);
+          this.vy = random(-18, 18);
         }
-        this.length = random(150, 300);
-        this.size = random(1.5, 3);
-        this.life = 0;
-        this.maxLife = random(30, 60);
+        this.length = random(120, 250);
+        this.size = random(1.5, 3.5);
+        this.life = 0; this.maxLife = random(40, 60);
         this.trail = [];
       }
       update() {
@@ -280,43 +343,24 @@
         for (let i = this.trail.length - 1; i > 0; i--) {
           const p = this.trail[i], prev = this.trail[i - 1];
           const a = i / this.trail.length;
-          ctx.strokeStyle = `rgba(255,255,255,${a * 0.8})`;
+          ctx.strokeStyle = `rgba(255,255,255,${a*0.8})`;
           ctx.lineWidth = this.size;
           ctx.moveTo(prev.x, prev.y);
           ctx.lineTo(p.x, p.y);
         }
         ctx.stroke();
-
-        // draw star-shaped head
         const head = this.trail[this.trail.length - 1];
         if (head) {
-          const spikes = 5;
-          const outer = this.size * 5;
-          const inner = outer * 0.5;
-          let rot = Math.PI / 2 * 3;
-          let x = head.x; let y = head.y;
-          ctx.beginPath();
-          ctx.moveTo(x, y - outer);
-          for (let i = 0; i < spikes; i++) {
-            let sx = x + Math.cos(rot) * outer;
-            let sy = y + Math.sin(rot) * outer;
-            ctx.lineTo(sx, sy);
-            rot += Math.PI / spikes;
-            sx = x + Math.cos(rot) * inner;
-            sy = y + Math.sin(rot) * inner;
-            ctx.lineTo(sx, sy);
-            rot += Math.PI / spikes;
-          }
-          ctx.closePath();
-          const grad = ctx.createRadialGradient(x, y, 0, x, y, outer);
+          const grad = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, this.size*6);
           grad.addColorStop(0, 'rgba(255,255,255,1)');
           grad.addColorStop(1, 'rgba(255,255,255,0)');
           ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(head.x, head.y, this.size*6, 0, 2*Math.PI);
           ctx.fill();
         }
       }
     }
-
     function resize() {
       width = window.innerWidth;
       height = window.innerHeight;
@@ -325,49 +369,22 @@
       canvas.height = height * pixelRatio;
       canvas.style.width = width + 'px';
       canvas.style.height = height + 'px';
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.setTransform(1,0,0,1,0,0);
       ctx.scale(pixelRatio, pixelRatio);
     }
-
-    function init() {
-      resize();
-      stars = [];
-      shootingStars = [];
-      for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
-    }
-
     function animate() {
-      ctx.clearRect(0, 0, width, height);
-      centerX = width / 2;
-      centerY = height / 2;
-      stars.forEach(star => {
-        star.update();
-        const ox = (mouseX - centerX) * (star.radius * 0.002);
-        const oy = (mouseY - centerY) * (star.radius * 0.002);
-        ctx.save();
-        ctx.translate(ox, oy);
-        star.draw();
-        ctx.restore();
-      });
+      ctx.clearRect(0,0,width,height);
       if (Math.random() < SHOOTING_STAR_CHANCE) shootingStars.push(new ShootingStar());
       for (let i = shootingStars.length - 1; i >= 0; i--) {
         shootingStars[i].update();
         shootingStars[i].draw();
-        if (shootingStars[i].life > shootingStars[i].maxLife) shootingStars.splice(i, 1);
+        if (shootingStars[i].life > shootingStars[i].maxLife)
+          shootingStars.splice(i,1);
       }
       requestAnimationFrame(animate);
     }
-
-    window.addEventListener('resize', () => {
-      resize();
-      init();
-    });
-    window.addEventListener('mousemove', e => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    init();
+    window.addEventListener('resize', resize);
+    resize();
     animate();
   })();
   </script>
