@@ -100,17 +100,25 @@
       box-shadow: 0 0 20px #00ffe1aa;
       display: block;
     }
-    p, .extended-description {
-      max-width: 600px;
-      margin: 0.5rem auto;
-      color: #ccc;
-      font-size: 1.2rem;
-      line-height: 1.4;
-    }
     .extended-description {
-      color: #aaa;
-      font-size: 1rem;
+      color: #fff;
+      font-size: 1.32rem;
+      line-height: 1.45;
+      text-shadow: 0 1px 6px #203050, 0 0 6px #002e4d;
+      font-weight: 400;
       margin-top: 1rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .bottom-description {
+      color: #fff;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      text-shadow: 0 1px 6px #203050, 0 0 6px #002e4d;
+      font-weight: 400;
+      max-width: 600px;
+      margin: 0.5rem auto 0 auto;
     }
     .links {
       display: flex;
@@ -158,26 +166,6 @@
       padding: 0;
       display: inline-block;
     }
-    .bio-button {
-      display: block;
-      margin: 2rem auto 0;
-      padding: 0.75rem 1.5rem;
-      max-width: 300px;
-      border: 2px solid #00ffe1;
-      border-radius: 12px;
-      color: #00ffe1;
-      background: rgba(0,0,0,0.25);
-      font-weight: 600;
-      text-align: center;
-      text-decoration: none;
-      transition: background 0.3s;
-      z-index: 10;
-      backdrop-filter: blur(1.5px);
-    }
-    .bio-button:hover {
-      background: rgba(0,255,225,0.12);
-    }
-
     .music-section {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -248,8 +236,13 @@
     @media (max-width: 600px) {
       h1 { font-size: 2.2rem; }
       .header-image { width: 90vw; height: auto; }
-      p, .links a, .bio-button { font-size: 0.9rem; }
-      .bio-button { padding: 0.6rem 1rem; }
+      .extended-description {
+        font-size: 1.13rem;
+      }
+      .bottom-description {
+        font-size: 0.97rem;
+      }
+      .links a { font-size: 0.9rem; }
       .music-section iframe { aspect-ratio: 1/1; min-height: 120px; }
     }
   </style>
@@ -264,8 +257,9 @@
       <img src="https://i.ibb.co/mCQ3GSf3/Img.jpg" alt="MyHomeIsTheCosmos Album Art" class="header-image" loading="lazy" />
       <p class="extended-description">
         Myhomeisthecosmos is an electronic music producer blending the euphoric vibes of Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore. Expect lush atmospheres, pulsing rhythms, and melodies designed to elevate your soul and move your feet. Turn On, Tune in, Drop Out and drift beyond the cosmos.
+      </p>
       <div style="height: 0.3em;"></div>
-      <div class="extended-description">
+      <div class="bottom-description">
         (The links below on mobile devices only give a 30 second preview of my songs, unless you click on the title to open in Spotify. You can get around this by opening this webpage on a computer, or by using the desktop version of the website on mobile.)
       </div>
       <div class="links">
