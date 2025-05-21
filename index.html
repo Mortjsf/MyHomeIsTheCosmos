@@ -5,14 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MyHomeIsTheCosmos</title>
   <meta name="description" content="Myhomeisthecosmos is an electronic music producer blending the euphoric vibes of Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore.">
-
+  <!-- Structured Data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "MyHomeIsTheCosmos",
+    "url": "https://mortjsf.github.io/MyHomeIsTheCosmos",
+    "description": "Myhomeisthecosmos is an electronic music producer blending the euphoric vibes of Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore.",
+    "sameAs": [
+      "https://open.spotify.com/artist/56413Wa0FcjVT5EIlu5kdZ?si=CZxWXWECSiu9sCLsVVJ8yQ",
+      "https://www.instagram.com/myhomeisthecosmos/",
+      "https://www.facebook.com/profile.php?id=61569035439737",
+      "https://www.snapchat.com/add/rickybjornholm"
+    ]
+  }
+  </script>
   <style>
-    /* ===== Reset & Basics ===== */
     html, body {
       margin: 0;
       padding: 0;
       min-height: 100%;
-      /* allow scrolling */
+      box-sizing: border-box;
       overflow: auto;
       background: black;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -22,18 +36,14 @@
       align-items: center;
       position: relative;
     }
-
-    /* ===== Starfield Background ===== */
     #starfield {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
-      z-index: 0;
+      z-index: -1;
       background: radial-gradient(ellipse at center, #0a0a12 0%, #000000 80%);
-      pointer-events: none; /* allow clicks/scrolls */
+      pointer-events: none;
     }
-
-    /* ===== Header ===== */
     header {
       position: relative;
       text-align: center;
@@ -69,8 +79,6 @@
       font-size: 1rem;
       margin-top: 1rem;
     }
-
-    /* ===== Links & Buttons ===== */
     .links {
       display: flex;
       justify-content: center;
@@ -115,24 +123,25 @@
     .bio-button:hover {
       background: rgba(0,255,225,0.3);
     }
-
-    /* ===== Music Section ===== */
     .music-section {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 2rem;
       width: 100%;
-      max-width: 1200px;
+      max-width: 800px;
       padding: 2rem 1rem;
       z-index: 1;
     }
     iframe {
       border-radius: 12px;
-      width: 100%; height: 352px;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      max-width: 380px;
       border: none;
+      background: #111;
+      display: block;
+      margin: 0 auto;
     }
-
-    /* ===== Footer ===== */
     footer {
       text-align: center;
       color: #666;
@@ -140,8 +149,17 @@
       font-size: 0.9rem;
       z-index: 1;
     }
-
-    /* ===== Responsive ===== */
+    @media (max-width: 900px) {
+      .music-section {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        padding: 10px;
+        gap: 1.2rem;
+      }
+      iframe {
+        max-width: 95vw;
+      }
+    }
     @media (max-width: 600px) {
       h1 { font-size: 2.2rem; }
       .header-image { width: 90vw; height: auto; }
@@ -150,14 +168,14 @@
     }
   </style>
 </head>
-
 <body>
   <canvas id="starfield"></canvas>
-
   <header>
     <h1>MyHomeIsTheCosmos</h1>
     <img src="https://i.ibb.co/mCQ3GSf3/Img.jpg" alt="MyHomeIsTheCosmos Album Art" class="header-image" loading="lazy" />
-    <p class="extended-description">Myhomeisthecosmos is an electronic music producer blending the euphoric vibes of Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore. Expect lush atmospheres, pulsing rhythms, and melodies designed to elevate your soul and move your feet. Tune in and drift beyond the cosmos.</p>
+    <p class="extended-description">
+      Myhomeisthecosmos is an electronic music producer blending the euphoric vibes of Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore. Expect lush atmospheres, pulsing rhythms, and melodies designed to elevate your soul and move your feet. Tune in and drift beyond the cosmos.
+    </p>
     <div class="links">
       <a href="https://open.spotify.com/artist/56413Wa0FcjVT5EIlu5kdZ" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/174/174872.png" alt="Spotify">Spotify</a>
       <a href="https://www.instagram.com/myhomeisthecosmos/" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384015.png" alt="Instagram">Instagram</a>
@@ -166,17 +184,15 @@
     </div>
     <a class="bio-button" href="https://www.instagram.com/stories/highlights/18006632745407525/" target="_blank" rel="noopener noreferrer">View Artist Bio Highlight</a>
   </header>
-
   <section class="music-section">
     <iframe src="https://open.spotify.com/embed/album/79kh02V36GrCq56eMMXnQT" loading="lazy"></iframe>
     <iframe src="https://open.spotify.com/embed/album/0qqwn3YssdwxPdQLKhFZWH" loading="lazy"></iframe>
     <iframe src="https://open.spotify.com/embed/album/45tT6nHjLpwxSfleqol1WC" loading="lazy"></iframe>
     <iframe src="https://open.spotify.com/embed/album/4dU3hlbmWBYPuAx6FDLogI" loading="lazy"></iframe>
   </section>
-
-  <footer>© 2024 MyHomeIsTheCosmos · All Rights Reserved · Built with 💫 in the cosmos</footer>
-
- <!-- Starfield + Shooting Stars Script -->
+  <footer>
+    © 2024 MyHomeIsTheCosmos · All Rights Reserved · Built with 💫 in the cosmos
+  </footer>
   <script>
   (() => {
     const canvas = document.getElementById('starfield');
@@ -208,18 +224,18 @@
       }
       draw() {
         const hue = 200 + 50 * Math.sin(this.twinklePhase * 0.5);
-        const color = hsla(${hue},80%,90%,${this.opacity});
+        const color = `hsla(${hue},80%,90%,${this.opacity})`;
         const glow = this.radius * 4;
-        const g = ctx.createRadialGradient(this.x,this.y,this.radius,this.x,this.y,glow);
-        g.addColorStop(0,color);
-        g.addColorStop(1,'rgba(255,255,255,0)');
+        const g = ctx.createRadialGradient(this.x, this.y, this.radius, this.x, this.y, glow);
+        g.addColorStop(0, color);
+        g.addColorStop(1, 'rgba(255,255,255,0)');
         ctx.fillStyle = g;
         ctx.beginPath();
-        ctx.arc(this.x,this.y,glow,0,2*Math.PI);
+        ctx.arc(this.x, this.y, glow, 0, 2 * Math.PI);
         ctx.fill();
         ctx.fillStyle = color;
         ctx.beginPath();
-        ctx.arc(this.x,this.y,this.radius,0,2*Math.PI);
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         ctx.fill();
       }
     }
@@ -227,95 +243,129 @@
     class ShootingStar {
       constructor() { this.reset(); }
       reset() {
-        if (Math.random()<0.5) {
-          this.x = random(0,width); this.y=0;
-          this.vx = random(-15,15); this.vy = random(15,25);
+        if (Math.random() < 0.5) {
+          this.x = random(0, width);
+          this.y = 0;
+          this.vx = random(-15, 15);
+          this.vy = random(15, 25);
         } else {
-          this.x = 0; this.y=random(0,height);
-          this.vx=random(15,25); this.vy=random(-15,15);
+          this.x = 0;
+          this.y = random(0, height);
+          this.vx = random(15, 25);
+          this.vy = random(-15, 15);
         }
-        this.length=random(150,300);
-        this.size=random(1.5,3);
-        this.life=0; this.maxLife=random(30,60);
-        this.trail=[];
+        this.length = random(150, 300);
+        this.size = random(1.5, 3);
+        this.life = 0;
+        this.maxLife = random(30, 60);
+        this.trail = [];
       }
       update() {
         this.life++;
-        this.trail.push({x:this.x,y:this.y});
-        if(this.trail.length>this.length) this.trail.shift();
-        this.x+=this.vx; this.y+=this.vy;
-        if(
-          this.x>width+this.length||this.y>height+this.length||
-          this.x< -this.length||this.y< -this.length||
-          this.life>this.maxLife
+        this.trail.push({ x: this.x, y: this.y });
+        if (this.trail.length > this.length) this.trail.shift();
+        this.x += this.vx;
+        this.y += this.vy;
+        if (
+          this.x > width + this.length ||
+          this.y > height + this.length ||
+          this.x < -this.length ||
+          this.y < -this.length ||
+          this.life > this.maxLife
         ) this.reset();
       }
       draw() {
-        ctx.lineCap='round';
+        ctx.lineCap = 'round';
         ctx.beginPath();
-        for(let i=this.trail.length-1;i>0;i--){
-          const p=this.trail[i],prev=this.trail[i-1];
-          const a=i/this.trail.length;
-          ctx.strokeStyle=rgba(255,255,255,${a*0.8});
-          ctx.lineWidth=this.size;
-          ctx.moveTo(prev.x,prev.y);
-          ctx.lineTo(p.x,p.y);
+        for (let i = this.trail.length - 1; i > 0; i--) {
+          const p = this.trail[i], prev = this.trail[i - 1];
+          const a = i / this.trail.length;
+          ctx.strokeStyle = `rgba(255,255,255,${a * 0.8})`;
+          ctx.lineWidth = this.size;
+          ctx.moveTo(prev.x, prev.y);
+          ctx.lineTo(p.x, p.y);
         }
         ctx.stroke();
-        const head=this.trail[this.trail.length-1];
-        if(head){
-          const grad=ctx.createRadialGradient(head.x,head.y,0,head.x,head.y,this.size*5);
-          grad.addColorStop(0,'rgba(255,255,255,1)');
-          grad.addColorStop(1,'rgba(255,255,255,0)');
-          ctx.fillStyle=grad;
+
+        // draw star-shaped head
+        const head = this.trail[this.trail.length - 1];
+        if (head) {
+          const spikes = 5;
+          const outer = this.size * 5;
+          const inner = outer * 0.5;
+          let rot = Math.PI / 2 * 3;
+          let x = head.x; let y = head.y;
           ctx.beginPath();
-          ctx.arc(head.x,head.y,this.size*5,0,2*Math.PI);
+          ctx.moveTo(x, y - outer);
+          for (let i = 0; i < spikes; i++) {
+            let sx = x + Math.cos(rot) * outer;
+            let sy = y + Math.sin(rot) * outer;
+            ctx.lineTo(sx, sy);
+            rot += Math.PI / spikes;
+            sx = x + Math.cos(rot) * inner;
+            sy = y + Math.sin(rot) * inner;
+            ctx.lineTo(sx, sy);
+            rot += Math.PI / spikes;
+          }
+          ctx.closePath();
+          const grad = ctx.createRadialGradient(x, y, 0, x, y, outer);
+          grad.addColorStop(0, 'rgba(255,255,255,1)');
+          grad.addColorStop(1, 'rgba(255,255,255,0)');
+          ctx.fillStyle = grad;
           ctx.fill();
         }
       }
     }
 
-    function resize(){
-      width=window.innerWidth; height=window.innerHeight;
-      canvas.width=width*devicePixelRatio;
-      canvas.height=height*devicePixelRatio;
-      canvas.style.width=width+'px'; canvas.style.height=height+'px';
-      ctx.setTransform(1,0,0,1,0,0);
-      ctx.scale(devicePixelRatio,devicePixelRatio);
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const pixelRatio = window.devicePixelRatio || 1;
+      canvas.width = width * pixelRatio;
+      canvas.height = height * pixelRatio;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(pixelRatio, pixelRatio);
     }
 
-    function init(){
+    function init() {
       resize();
-      stars=[]; shootingStars=[];
-      for(let i=0;i<STAR_COUNT;i++) stars.push(new Star());
+      stars = [];
+      shootingStars = [];
+      for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
     }
 
-    function animate(){
-      ctx.clearRect(0,0,width,height);
-      centerX=width/2; centerY=height/2;
-
-      stars.forEach(star=>{
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      centerX = width / 2;
+      centerY = height / 2;
+      stars.forEach(star => {
         star.update();
-        const ox=(mouseX-centerX)*(star.radius*0.002);
-        const oy=(mouseY-centerY)*(star.radius*0.002);
+        const ox = (mouseX - centerX) * (star.radius * 0.002);
+        const oy = (mouseY - centerY) * (star.radius * 0.002);
         ctx.save();
-        ctx.translate(ox,oy);
+        ctx.translate(ox, oy);
         star.draw();
         ctx.restore();
       });
-
-      if(Math.random()<SHOOTING_STAR_CHANCE) shootingStars.push(new ShootingStar());
-      for(let i=shootingStars.length-1;i>=0;i--){
+      if (Math.random() < SHOOTING_STAR_CHANCE) shootingStars.push(new ShootingStar());
+      for (let i = shootingStars.length - 1; i >= 0; i--) {
         shootingStars[i].update();
         shootingStars[i].draw();
-        if(shootingStars[i].life>shootingStars[i].maxLife) shootingStars.splice(i,1);
+        if (shootingStars[i].life > shootingStars[i].maxLife) shootingStars.splice(i, 1);
       }
-
       requestAnimationFrame(animate);
     }
 
-    window.addEventListener('resize',()=>{ resize(); init(); });
-    window.addEventListener('mousemove',e=>{ mouseX=e.clientX; mouseY=e.clientY; });
+    window.addEventListener('resize', () => {
+      resize();
+      init();
+    });
+    window.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
 
     init();
     animate();
