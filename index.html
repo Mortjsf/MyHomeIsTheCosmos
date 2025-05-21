@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MyHomeIsTheCosmos</title>
   <meta name="description" content="Myhomeisthecosmos is an electronic music producer blending the euphoric vibes of Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore.">
-  <!-- Structured Data for SEO -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -41,17 +40,7 @@
       overflow-x: hidden;
     }
     html::-webkit-scrollbar, body::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
-    }
-
-    /* Deep space gradient overlay, dark blue at bottom 10% */
-    #deep-space-gradient {
-      pointer-events: none;
-      position: fixed;
-      left: 0; top: 0; width: 100vw; height: 100vh;
-      z-index: -4;
-      background: linear-gradient(to bottom, #000 90%, #05122a 100%);
-      opacity: 1;
+      display: none;
     }
 
     #starfield-canvas, #shooting-star-canvas, #comet-canvas {
@@ -130,7 +119,6 @@
       margin-right: 0.5rem;
       display: inline-block;
       background: none !important;
-      /* No filter for snapchat logo */
     }
     .bio-button {
       display: block;
@@ -224,7 +212,6 @@
   </style>
 </head>
 <body>
-  <div id="deep-space-gradient"></div>
   <canvas id="starfield-canvas"></canvas>
   <canvas id="shooting-star-canvas"></canvas>
   <canvas id="comet-canvas"></canvas>
@@ -245,9 +232,9 @@
         <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">Facebook
       </a>
       <a href="https://www.snapchat.com/add/rickybjornholm" target="_blank" rel="noopener noreferrer">
-        <!-- Authentic Snapchat logo: Ghostface Chillah ghost on yellow background, with circle and no padding -->
+        <!-- Authentic Snapchat logo: Ghostface Chillah ghost on yellow background, with circle -->
         <span class="snapchat-logo" style="display:inline-block;width:24px;height:24px;vertical-align:middle;margin-right:0.5rem;border-radius:6px;overflow:hidden;background:#FFFC00;">
-          <svg viewBox="0 0 48 48" width="24" height="24" style="display:block;">
+          <svg width="24" height="24" viewBox="0 0 48 48">
             <circle cx="24" cy="24" r="24" fill="#FFFC00"/>
             <path d="M24 10c-4.6 0-7 2.1-7 7s1.8 7.2 2.4 8.2c.4.7-.1 1.8-.8 2.2s-2.8.7-3.7 1.9c-.7.9.1 1.4.7 1.6.9.3 2.5-.2 3.2.2.6.3.4 1.3-.1 2.1-.5.7-2.2 2.2-2.2 2.7 0 .6 1.1 1.3 5.5 1.3s5.5-.7 5.5-1.3c0-.5-1.7-2-2.2-2.7-.5-.8-.7-1.8-.1-2.1.7-.4 2.3.1 3.2-.2.7-.2 1.4-.7.7-1.6-.9-1.2-3.1-1.4-3.7-1.9-.7-.4-1.2-1.5-.8-2.2.6-1 2.4-3.3 2.4-8.2s-2.4-7-7-7z" fill="#fff" stroke="#000" stroke-width="1"/>
           </svg>
@@ -344,7 +331,14 @@
       for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
     }
     function animate() {
-      ctx.clearRect(0, 0, width, height);
+      // Jet black, with deep blue at the bottom 10%
+      const grad = ctx.createLinearGradient(0, 0, 0, height);
+      grad.addColorStop(0, "#000");
+      grad.addColorStop(0.9, "#000");
+      grad.addColorStop(1, "#05122a");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
+
       centerX = width / 2; centerY = height / 2;
       for (const star of stars) {
         star.update();
@@ -363,7 +357,6 @@
     const canvas = document.getElementById('shooting-star-canvas');
     const ctx = canvas.getContext('2d');
     let width, height, shootingStars = [];
-    // 1-2 every 3-5 seconds: at 60fps, 0.01 gives about that rate
     const SHOOTING_STAR_CHANCE = 0.01;
 
     function random(min, max) {
@@ -381,7 +374,6 @@
         this.trail = [];
         this.life = 0;
         this.maxLife = random(35, 52);
-        // Colors for "real" meteors
         this.headColor = 'rgba(255,255,255,1)';
         this.trailColor = 'rgba(255,255,255,0.6)';
         this.glowColor = 'rgba(200,230,255,0.32)';
@@ -411,7 +403,7 @@
         ctx.shadowBlur = 0;
         ctx.restore();
 
-        // Head, a glowing elongated ellipse
+        // Head, glowing elongated ellipse
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
@@ -471,7 +463,6 @@
 
     class Comet {
       constructor() {
-        // Start off left/top, move diagonally
         if (Math.random() < 0.5) {
           this.x = -180;
           this.y = random(height * 0.18, height * 0.40);
@@ -497,11 +488,9 @@
         if (this.trail.length > this.trailMax) this.trail.shift();
         this.x += this.vx;
         this.y += this.vy;
-        // Fade out as it leaves the screen
         if (this.x > width + 200 || this.y > height + 200) this.opacity -= 0.013;
       }
       draw() {
-        // Tail: blue fading, wide at origin
         for (let i = 1; i < this.trail.length; i++) {
           const p1 = this.trail[i - 1], p2 = this.trail[i];
           const t = i / this.trail.length;
@@ -512,7 +501,6 @@
           ctx.lineTo(p2.x, p2.y);
           ctx.stroke();
         }
-        // Comet head: glowing blue-white ellipse
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.beginPath();
@@ -555,7 +543,7 @@
         comet.draw();
         if (!comet.isVisible()) {
           comet = null;
-          nextCometTime = Date.now() + random(5000, 10000); // 5–10 seconds
+          nextCometTime = Date.now() + random(5000, 10000);
         }
       }
       requestAnimationFrame(animate);
