@@ -151,11 +151,11 @@
       width: 28px; height: 28px;
       margin-right: 0.5rem;
       background: #FFFC00;
-      border-radius: 50%;
-      object-fit: contain;
+      border-radius: 6px;
+      object-fit: cover;
       box-shadow: 0 0 0 1.5px #efe711, 0 0 8px #fff20030;
       border: 1.5px solid #efe711;
-      padding: 2.5px;
+      padding: 0;
       display: inline-block;
     }
     .bio-button {
@@ -400,7 +400,7 @@
     animate();
   })();
 
-  // SHOOTING STARS: now spikey, star-like, shooting from the background
+  // SHOOTING STARS: now spikey, star-like, shooting from the background, HALF previous size
   (() => {
     const canvas = document.getElementById('shooting-star-canvas');
     const ctx = canvas.getContext('2d');
@@ -416,14 +416,14 @@
       reset() {
         this.x = random(0.08 * width, 0.92 * width);
         this.y = random(0.01 * height, 0.33 * height);
-        this.length = random(120, 220);
+        this.length = random(60, 110); // half previous
         this.angle = random(Math.PI * 0.59, Math.PI * 0.86);
-        this.speed = random(18, 28);
-        this.size = random(2.2, 4.1); // slightly larger to show star shape
+        this.speed = random(9, 14); // half previous
+        this.size = random(1.1, 2.1); // half previous
         this.spikes = Math.floor(random(5,8));
         this.trail = [];
         this.life = 0;
-        this.maxLife = random(32, 50);
+        this.maxLife = random(20, 30); // slightly shorter
         this.color = "rgba(255,255,255,1)";
       }
       update() {
@@ -446,7 +446,7 @@
           ctx.lineTo(p.x, p.y);
         }
         ctx.shadowColor = "rgba(255,255,255,0.4)";
-        ctx.shadowBlur = 18;
+        ctx.shadowBlur = 12;
         ctx.stroke();
         ctx.shadowBlur = 0;
         ctx.restore();
@@ -474,7 +474,7 @@
         }
         ctx.closePath();
         ctx.shadowColor = "#fff";
-        ctx.shadowBlur = 20;
+        ctx.shadowBlur = 14;
         ctx.fillStyle = "#fff";
         ctx.fill();
         ctx.globalAlpha = 1;
