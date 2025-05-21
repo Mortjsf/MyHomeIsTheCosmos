@@ -175,7 +175,7 @@
 
   <footer>© 2024 MyHomeIsTheCosmos · All Rights Reserved · Built with 💫 in the cosmos</footer>
 
-  <script>
+<script>
   (() => {
     const canvas = document.getElementById('starfield');
     const ctx = canvas.getContext('2d');
@@ -192,9 +192,9 @@
       reset() {
         this.x = random(0, width);
         this.y = random(0, height);
-        this.radius = random(0.1, 1.2);
+        this.radius = random(0.3, 1.2);
         this.opacity = random(0.3, 1);
-        this.speed = this.radius * 0.1 + 0.02;
+        this.speed = this.radius * 0.15 + 0.03;
         this.twinkleSpeed = random(0.005, 0.02);
         this.twinklePhase = random(0, Math.PI * 2);
       }
@@ -207,7 +207,7 @@
       draw() {
         const hue = 200 + 50 * Math.sin(this.twinklePhase * 0.5);
         const color = `hsla(${hue},80%,90%,${this.opacity})`;
-        const glow = this.radius * 3;
+        const glow = this.radius * 4;
         const g = ctx.createRadialGradient(this.x, this.y, this.radius, this.x, this.y, glow);
         g.addColorStop(0, color);
         g.addColorStop(1, 'rgba(255,255,255,0)');
@@ -226,22 +226,28 @@
       constructor() { this.reset(); }
       reset() {
         if (Math.random() < 0.5) {
-          this.x = random(0, width); this.y = 0;
-          this.vx = random(-15, 15); this.vy = random(15, 25);
+          this.x = random(0, width);
+          this.y = 0;
+          this.vx = random(-15, 15);
+          this.vy = random(15, 25);
         } else {
-          this.x = 0; this.y = random(0, height);
-          this.vx = random(15, 25); this.vy = random(-15, 15);
+          this.x = 0;
+          this.y = random(0, height);
+          this.vx = random(15, 25);
+          this.vy = random(-15, 15);
         }
-        this.length = random(100, 200);
-        this.size = random(1, 2);
-        this.life = 0; this.maxLife = random(30, 50);
+        this.length = random(150, 300);
+        this.size = random(1.5, 3);
+        this.life = 0;
+        this.maxLife = random(30, 60);
         this.trail = [];
       }
       update() {
         this.life++;
         this.trail.push({ x: this.x, y: this.y });
         if (this.trail.length > this.length) this.trail.shift();
-        this.x += this.vx; this.y += this.vy;
+        this.x += this.vx;
+        this.y += this.vy;
         if (
           this.x > width + this.length ||
           this.y > height + this.length ||
@@ -256,7 +262,7 @@
         for (let i = this.trail.length - 1; i > 0; i--) {
           const p = this.trail[i], prev = this.trail[i - 1];
           const a = i / this.trail.length;
-          ctx.strokeStyle = `rgba(255,255,255,${a*0.8})`;
+          ctx.strokeStyle = `rgba(255,255,255,${a * 0.8})`;
           ctx.lineWidth = this.size;
           ctx.moveTo(prev.x, prev.y);
           ctx.lineTo(p.x, p.y);
@@ -294,11 +300,13 @@
     }
 
     function resize() {
-      width = window.innerWidth; height = window.innerHeight;
+      width = window.innerWidth;
+      height = window.innerHeight;
       canvas.width = width * devicePixelRatio;
       canvas.height = height * devicePixelRatio;
-      canvas.style.width = width + 'px'; canvas.style.height = height + 'px';
-      ctx.setTransform(1,0,0,1,0,0);
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(devicePixelRatio, devicePixelRatio);
     }
 
@@ -311,27 +319,36 @@
 
     function animate() {
       ctx.clearRect(0, 0, width, height);
-      centerX = width/2; centerY = height/2;
+      centerX = width / 2;
+      centerY = height / 2;
       stars.forEach(star => {
         star.update();
         const ox = (mouseX - centerX) * (star.radius * 0.002);
         const oy = (mouseY - centerY) * (star.radius * 0.002);
-        ctx.save(); ctx.translate(ox, oy); star.draw(); ctx.restore();
+        ctx.save();
+        ctx.translate(ox, oy);
+        star.draw();
+        ctx.restore();
       });
       if (Math.random() < SHOOTING_STAR_CHANCE) shootingStars.push(new ShootingStar());
-      for (let i = shootingStars.length - 1; i>=0; i--) {
-        shootingStars[i].update(); shootingStars[i].draw();
-        if (shootingStars[i].life > shootingStars[i].maxLife) shootingStars.splice(i,1);
+      for (let i = shootingStars.length - 1; i >= 0; i--) {
+        shootingStars[i].update();
+        shootingStars[i].draw();
+        if (shootingStars[i].life > shootingStars[i].maxLife) shootingStars.splice(i, 1);
       }
       requestAnimationFrame(animate);
     }
 
-    window.addEventListener('resize', () => { resize(); init(); });
-    window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+    window.addEventListener('resize', () => {
+      resize();
+      init();
+    });
+    window.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
 
     init();
     animate();
   })();
-  </script>
-</body>
-</html>
+</script>
