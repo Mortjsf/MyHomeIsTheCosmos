@@ -34,6 +34,7 @@
       overflow-x: hidden;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      cursor: none !important;
     }
     html::-webkit-scrollbar, body::-webkit-scrollbar {
       display: none;
@@ -53,6 +54,15 @@
     #starfield-canvas { z-index: 0; }
     #shooting-star-canvas { z-index: 1; }
     #comet-canvas { z-index: 2; }
+    /* --- Star Cursor Canvas --- */
+    #star-cursor-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 10000;
+      display: block;
+    }
     body {
       min-height: 100vh;
       display: flex;
@@ -251,12 +261,14 @@
   <canvas id="starfield-canvas"></canvas>
   <canvas id="shooting-star-canvas"></canvas>
   <canvas id="comet-canvas"></canvas>
+  <!-- NEW: Star Cursor Canvas -->
+  <canvas id="star-cursor-canvas"></canvas>
   <div class="container">
     <header>
       <h1>MyHomeIsTheCosmos</h1>
       <img src="https://i.ibb.co/mCQ3GSf3/Img.jpg" alt="MyHomeIsTheCosmos Album Art" class="header-image" loading="lazy" />
       <p class="extended-description">
-        Myhomeisthecosmos is an electronic music producer blending the euphoric vibes of Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore. Expect lush atmospheres, pulsing rhythms, and melodies designed to elevate your soul and move your feet. Turn On, Tune in, Drop Out and drift beyond the cosmos.
+        Myhomeisthecosmos is an electronic music producer blending the euphoric vibes of Tropical House, Drum and Bass, Trance, Deep House, and UK Happy Hardcore. Expect lush atmospheres, pulsing rhythms, and cosmic melodies.
       </p>
       <div style="height: 0.3em;"></div>
       <div class="bottom-description">
@@ -616,6 +628,75 @@
     window.addEventListener('resize', resize);
     resize();
     nextCometTime = Date.now() + random(5000, 8000);
+    animate();
+  })();
+
+  // STAR CURSOR + TRAIL
+  (() => {
+    const canvas = document.getElementById('star-cursor-canvas');
+    const ctx = canvas.getContext('2d');
+    let width = window.innerWidth, height = window.innerHeight;
+    let mouseX = width / 2, mouseY = height / 2;
+    let trail = [];
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    window.addEventListener('pointermove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      trail.push({x: mouseX, y: mouseY, t: Date.now()});
+      if (trail.length > 18) trail.shift();
+    });
+
+    function drawStar(cx, cy, spikes, outerRadius, innerRadius, color) {
+      let rot = Math.PI / 2 * 3;
+      let x = cx, y = cy;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - outerRadius);
+      for (let i = 0; i < spikes; i++) {
+        x = cx + Math.cos(rot) * outerRadius;
+        y = cy + Math.sin(rot) * outerRadius;
+        ctx.lineTo(x, y);
+        rot += Math.PI / spikes;
+
+        x = cx + Math.cos(rot) * innerRadius;
+        y = cy + Math.sin(rot) * innerRadius;
+        ctx.lineTo(x, y);
+        rot += Math.PI / spikes;
+      }
+      ctx.closePath();
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 12;
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw trail (smaller, faded stars)
+      for (let i = 0; i < trail.length; i++) {
+        const t = trail[i];
+        const age = Date.now() - t.t;
+        const opacity = Math.max(0, 0.24 + 0.45 * (i / trail.length) - age * 0.0015);
+        if (opacity <= 0) continue;
+        ctx.globalAlpha = opacity;
+        drawStar(t.x, t.y, 5, 8, 4, "#00ffe1");
+      }
+
+      // Draw main star cursor
+      ctx.globalAlpha = 1;
+      drawStar(mouseX, mouseY, 6, 16, 8, "#fffde4");
+      requestAnimationFrame(animate);
+    }
     animate();
   })();
   </script>
