@@ -26,8 +26,10 @@
       margin: 0;
       padding: 0;
       min-height: 100%;
+      height: 100%;
+      width: 100%;
       box-sizing: border-box;
-      overflow: auto;
+      overflow-x: hidden;
       background: transparent;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #eee;
@@ -49,7 +51,6 @@
       z-index: -1;
     }
 
-    /* Remove any forced background from body */
     body {
       background: transparent !important;
     }
@@ -150,29 +151,30 @@
       z-index: 1;
       background: none !important;
     }
+    .music-section > * {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+      min-width: 0;
+      min-height: 0;
+    }
     .music-section iframe {
-      border-radius: 12px;
       width: 100%;
       height: 100%;
-      aspect-ratio: 1 / 1;
       min-height: 240px;
-      max-width: 100%;
-      max-height: 100%;
+      min-width: 240px;
+      border-radius: 12px;
       border: none;
       background: none !important;
       display: block;
       box-shadow: 0 0 12px #0009;
-      /* Remove default spacing */
       margin: 0;
       padding: 0;
-    }
-    .music-section > * {
-      width: 100%;
-      height: 100%;
-      min-height: 240px;
-      max-width: 100%;
-      max-height: 100%;
-      display: flex;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      flex: 1 1 0;
     }
     footer {
       text-align: center;
@@ -190,7 +192,9 @@
         gap: 1.2rem;
       }
       .music-section iframe {
-        max-width: 100vw;
+        min-width: 0;
+        min-height: 160px;
+        aspect-ratio: 1/1;
       }
     }
     @media (max-width: 600px) {
@@ -198,6 +202,7 @@
       .header-image { width: 90vw; height: auto; }
       p, .links a, .bio-button { font-size: 0.9rem; }
       .bio-button { padding: 0.6rem 1rem; }
+      .music-section iframe { aspect-ratio: 1/1; min-height: 120px; }
     }
   </style>
 </head>
@@ -219,66 +224,78 @@
     <a class="bio-button" href="https://www.instagram.com/stories/highlights/18006632745407525/" target="_blank" rel="noopener noreferrer">View Artist Bio Highlight</a>
   </header>
   <section class="music-section">
-    <iframe src="https://open.spotify.com/embed/album/79kh02V36GrCq56eMMXnQT" loading="lazy"></iframe>
-    <iframe src="https://open.spotify.com/embed/album/0qqwn3YssdwxPdQLKhFZWH" loading="lazy"></iframe>
-    <iframe src="https://open.spotify.com/embed/album/45tT6nHjLpwxSfleqol1WC" loading="lazy"></iframe>
-    <iframe src="https://open.spotify.com/embed/album/4dU3hlbmWBYPuAx6FDLogI" loading="lazy"></iframe>
+    <div><iframe src="https://open.spotify.com/embed/album/79kh02V36GrCq56eMMXnQT" loading="lazy" allowtransparency="true" allow="encrypted-media"></iframe></div>
+    <div><iframe src="https://open.spotify.com/embed/album/0qqwn3YssdwxPdQLKhFZWH" loading="lazy" allowtransparency="true" allow="encrypted-media"></iframe></div>
+    <div><iframe src="https://open.spotify.com/embed/album/45tT6nHjLpwxSfleqol1WC" loading="lazy" allowtransparency="true" allow="encrypted-media"></iframe></div>
+    <div><iframe src="https://open.spotify.com/embed/album/4dU3hlbmWBYPuAx6FDLogI" loading="lazy" allowtransparency="true" allow="encrypted-media"></iframe></div>
   </section>
   <footer>
     © 2024 MyHomeIsTheCosmos · All Rights Reserved · Built with 💫 in the cosmos
   </footer>
   <script>
-  // Twinkling, parallax starfield (background)
+  // Spikey static starfield (no falling star effect, no Y movement, only parallax and twinkle)
   (() => {
     const canvas = document.getElementById('starfield-canvas');
     const ctx = canvas.getContext('2d');
     let width, height, stars = [];
     let mouseX = 0, mouseY = 0, centerX, centerY;
-    const STAR_COUNT = 1200;
+    const STAR_COUNT = 900; // slightly less for clarity
+
     function random(min, max) {
       return Math.random() * (max - min) + min;
     }
+
     class Star {
       constructor() { this.reset(); }
       reset() {
         this.x = random(0, width);
         this.y = random(0, height);
-        this.radius = random(0.3, 1.2);
-        this.opacity = random(0.3, 1);
-        this.speed = this.radius * 0.15 + 0.03;
+        this.radius = random(0.5, 1.2);
+        this.opacity = random(0.6, 1);
         this.twinkleSpeed = random(0.005, 0.02);
         this.twinklePhase = random(0, Math.PI * 2);
+        this.spikes = Math.floor(random(5, 8)); // between 5 and 7 spikes
         this.baseOpacity = this.opacity;
+        this.color = `hsl(${random(180,230)},100%,90%)`;
       }
       update() {
-        this.y += this.speed;
-        if (this.y > height) this.y = 0;
         this.twinklePhase += this.twinkleSpeed;
         this.opacity = this.baseOpacity * (0.7 + 0.3 * Math.sin(this.twinklePhase));
       }
       draw() {
-        // Parallax offset
-        const ox = (mouseX - centerX) * (this.radius * 0.002);
-        const oy = (mouseY - centerY) * (this.radius * 0.002);
+        // Spikey star, like a tiny sunburst
+        const ox = (mouseX - centerX) * (this.radius * 0.004);
+        const oy = (mouseY - centerY) * (this.radius * 0.004);
         ctx.save();
-        ctx.translate(ox, oy);
-        const hue = 200 + 50 * Math.sin(this.twinklePhase * 0.5);
-        const color = `hsla(${hue},80%,90%,${this.opacity})`;
-        const glow = this.radius * 4;
-        const g = ctx.createRadialGradient(this.x, this.y, this.radius, this.x, this.y, glow);
-        g.addColorStop(0, color);
-        g.addColorStop(1, 'rgba(255,255,255,0)');
-        ctx.fillStyle = g;
+        ctx.translate(this.x + ox, this.y + oy);
+        ctx.globalAlpha = this.opacity;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, glow, 0, 2 * Math.PI);
+        let rot = Math.PI / 2 * 3;
+        let x = 0, y = 0;
+        let spikes = this.spikes,
+          outerRadius = this.radius * 4.5,
+          innerRadius = outerRadius * 0.42;
+        ctx.moveTo(0, -outerRadius);
+        for (let i = 0; i < spikes; i++) {
+          x = Math.cos(rot) * outerRadius;
+          y = Math.sin(rot) * outerRadius;
+          ctx.lineTo(x, y);
+          rot += Math.PI / spikes;
+          x = Math.cos(rot) * innerRadius;
+          y = Math.sin(rot) * innerRadius;
+          ctx.lineTo(x, y);
+          rot += Math.PI / spikes;
+        }
+        ctx.closePath();
+        ctx.shadowColor = this.color;
+        ctx.shadowBlur = 7;
+        ctx.fillStyle = this.color;
         ctx.fill();
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        ctx.fill();
+        ctx.globalAlpha = 1;
         ctx.restore();
       }
     }
+
     function resize() {
       width = window.innerWidth;
       height = window.innerHeight;
@@ -293,10 +310,10 @@
       for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
     }
     function animate() {
-      // Draw base gradient for depth
+      // Darker night sky gradient
       const grad = ctx.createLinearGradient(0, 0, 0, height);
-      grad.addColorStop(0, "#10101a");
-      grad.addColorStop(1, "#223c5b");
+      grad.addColorStop(0, "#070a13");
+      grad.addColorStop(1, "#0e1629");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, width, height);
       centerX = width / 2; centerY = height / 2;
@@ -312,12 +329,13 @@
     animate();
   })();
 
-  // Shooting stars (canvas overlay)
+  // Shooting stars (canvas overlay, fewer, only dynamic element)
   (() => {
     const canvas = document.getElementById('shooting-star-canvas');
     const ctx = canvas.getContext('2d');
     let width, height, shootingStars = [];
-    const SHOOTING_STAR_CHANCE = 0.007;
+    const SHOOTING_STAR_CHANCE = 0.0017; // MUCH less frequent
+
     function random(min, max) {
       return Math.random() * (max - min) + min;
     }
@@ -325,19 +343,19 @@
       constructor() { this.reset(); }
       reset() {
         if (Math.random() < 0.5) {
-          this.x = random(width * 0.1, width * 0.9);
-          this.y = random(0, height * 0.25);
-          this.vx = random(-20, 20);
-          this.vy = random(10, 28);
+          this.x = random(width * 0.15, width * 0.85);
+          this.y = random(0, height * 0.22);
+          this.vx = random(-10, 10);
+          this.vy = random(7, 19);
         } else {
-          this.x = random(0, width * 0.25);
-          this.y = random(height * 0.1, height * 0.9);
-          this.vx = random(18, 32);
-          this.vy = random(-18, 18);
+          this.x = random(0, width * 0.18);
+          this.y = random(height * 0.15, height * 0.90);
+          this.vx = random(12, 22);
+          this.vy = random(-12, 12);
         }
-        this.length = random(120, 250);
-        this.size = random(1.5, 3.5);
-        this.life = 0; this.maxLife = random(40, 60);
+        this.length = random(90, 180);
+        this.size = random(1.2, 2.5);
+        this.life = 0; this.maxLife = random(44, 66);
         this.trail = [];
       }
       update() {
@@ -368,13 +386,32 @@
         ctx.stroke();
         const head = this.trail[this.trail.length - 1];
         if (head) {
-          const grad = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, this.size*6);
+          ctx.save();
+          ctx.translate(head.x, head.y);
+          // Spikey star head
+          const spikes = 5;
+          const outer = this.size * 6.2;
+          const inner = outer * 0.5;
+          let rot = Math.PI / 2 * 3;
+          ctx.beginPath();
+          ctx.moveTo(0, -outer);
+          for (let i = 0; i < spikes; i++) {
+            let sx = Math.cos(rot) * outer;
+            let sy = Math.sin(rot) * outer;
+            ctx.lineTo(sx, sy);
+            rot += Math.PI / spikes;
+            sx = Math.cos(rot) * inner;
+            sy = Math.sin(rot) * inner;
+            ctx.lineTo(sx, sy);
+            rot += Math.PI / spikes;
+          }
+          ctx.closePath();
+          let grad = ctx.createRadialGradient(0, 0, 0, 0, 0, outer);
           grad.addColorStop(0, 'rgba(255,255,255,1)');
           grad.addColorStop(1, 'rgba(255,255,255,0)');
           ctx.fillStyle = grad;
-          ctx.beginPath();
-          ctx.arc(head.x, head.y, this.size*6, 0, 2*Math.PI);
           ctx.fill();
+          ctx.restore();
         }
       }
     }
