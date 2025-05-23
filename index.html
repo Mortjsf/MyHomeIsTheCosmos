@@ -347,6 +347,21 @@
     });
 </script>
 <!-- Richard's Wise Old Man Tracker Embed End -->
+<!-- View Count Badge Start -->
+<div style="text-align:center; margin-top:30px;">
+  <span>Views: <span id="view-count">Loading...</span></span>
+</div>
+<script>
+fetch('https://api.countapi.xyz/hit/Mortjsf_MyHomeIsTheCosmos/index')
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('view-count').innerText = data.value;
+  })
+  .catch(() => {
+    document.getElementById('view-count').innerText = "N/A";
+  });
+</script>
+<!-- View Count Badge End -->
     <footer>
       © 2024 MyHomeIsTheCosmos · All Rights Reserved
       <div class="footer-by">Built with 💫 in the cosmos by Richard Bjornholm III</div>
