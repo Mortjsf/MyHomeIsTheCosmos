@@ -296,6 +296,71 @@
       <div><iframe src="https://open.spotify.com/embed/album/45tT6nHjLpwxSfleqol1WC" loading="lazy" allowtransparency="true" allow="encrypted-media"></iframe></div>
       <div><iframe src="https://open.spotify.com/embed/album/4dU3hlbmWBYPuAx6FDLogI" loading="lazy" allowtransparency="true" allow="encrypted-media"></iframe></div>
     </section>
+<!-- Rheefer's Wise Old Man Tracker Embed Start -->
+<div style="width:100%;max-width:800px;margin:2.5rem auto 0 auto;">
+  <div class="wowm-card">
+    <h1 style="text-align:center;margin-top:0;">Rheefer's Wise Old Man Tracker</h1>
+    <div style="text-align:center;">
+      <a href="https://wiseoldman.net/players/Rheefer" target="_blank">
+        View Rheefer on Wise Old Man
+      </a>
+    </div>
+    <div style="margin-top:1em;">
+      <h2 style="font-size:1.1em;margin-bottom:0.5em;">Embedded Profile (if available)</h2>
+      <iframe
+        src="https://wiseoldman.net/players/Rheefer"
+        width="100%"
+        height="800"
+        style="border:1px solid #ccc;border-radius:8px;background:#fff;"
+        title="Rheefer's Wise Old Man Profile"
+        loading="lazy">
+      </iframe>
+      <noscript>
+        Iframe embedding may be blocked by Wise Old Man. If you see nothing above,
+        <a href="https://wiseoldman.net/players/Rheefer" target="_blank">click here</a>.
+      </noscript>
+    </div>
+    <div class="wowm-card" id="wowm-stats" style="margin:2em auto 0 auto;">
+      <h2 style="font-size:1.1em;">Latest Stats (Live)</h2>
+      <div id="wowm-loading">Loading...</div>
+      <div id="wowm-data" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+<script>
+  // Simple Wise Old Man API example
+  fetch('https://api.wiseoldman.net/v2/players/Rheefer')
+    .then(res => res.json())
+    .then(player => {
+      document.getElementById('wowm-loading').style.display = 'none';
+      const statsDiv = document.getElementById('wowm-data');
+      statsDiv.style.display = 'block';
+      statsDiv.innerHTML = `
+        <strong>Username:</strong> ${player.displayName}<br>
+        <strong>Type:</strong> ${player.type}<br>
+        <strong>Combat Level:</strong> ${player.combatLevel}<br>
+        <strong>Total Level:</strong> ${player.latestSnapshot.data.overall.level}<br>
+        <strong>Total XP:</strong> ${player.latestSnapshot.data.overall.experience.toLocaleString()}<br>
+        <strong>Last Updated:</strong> ${new Date(player.updatedAt).toLocaleString()}<br>
+      `;
+    })
+    .catch(() => {
+      document.getElementById('wowm-loading').textContent = 'Failed to load stats.';
+    });
+</script>
+<style>
+  .wowm-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    max-width: 400px;
+    margin: 1rem auto;
+    background: #fafafa;
+    font-family: sans-serif;
+    color: #1a1a1a;
+  }
+</style>
+<!-- Rheefer's Wise Old Man Tracker Embed End -->
     <footer>
       © 2024 MyHomeIsTheCosmos · All Rights Reserved
       <div class="footer-by">Built with 💫 in the cosmos by Richard Bjornholm III</div>
